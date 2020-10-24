@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dbj-fwk-lib", "dbj-fwk-lib.vcxproj", "{E2EA48AE-16F3-4612-9C0D-DF2C2D996DEB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E2EA48AE-16F3-4612-9C0D-DF2C2D996DEB}.Debug|x64.ActiveCfg = Debug|x64
+		{E2EA48AE-16F3-4612-9C0D-DF2C2D996DEB}.Debug|x64.Build.0 = Debug|x64
+		{E2EA48AE-16F3-4612-9C0D-DF2C2D996DEB}.Release|x64.ActiveCfg = Release|x64
+		{E2EA48AE-16F3-4612-9C0D-DF2C2D996DEB}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5A1FB9C0-8F92-4AC0-88AA-6461C077DBA3}
+	EndGlobalSection
+EndGlobal
