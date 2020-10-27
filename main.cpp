@@ -1,7 +1,31 @@
 // #include "../ubench.h/ubench.h"
 #include "dbj_main.h"
+/// --------------------------------------------------------------------------------
+#include <winnt.h>
 
-extern "C" int main (int argc, char ** argv)  
+//typedef struct _OSVERSIONINFOA {
+//    DWORD dwOSVersionInfoSize;
+//    DWORD dwMajorVersion;
+//    DWORD dwMinorVersion;
+//    DWORD dwBuildNumber;
+//    DWORD dwPlatformId;
+//    CHAR   szCSDVersion[128];     // Maintenance string for PSS usage
+//} OSVERSIONINFOA, * POSVERSIONINFOA, * LPOSVERSIONINFOA;
+extern "C" {
+    typedef struct osinfo_struct {
+        long dwOSVersionInfoSize;
+        long dwMajorVersion;
+        long dwMinorVersion;
+        long dwBuildNumber;
+        long dwPlatformId;
+        char szCSDVersion[128];     // Maintenance string for PSS usage
+    } osinfo, * osinfo_ptr;
+
+    osinfo get_os_version(void);
+} // "C"
+
+/// --------------------------------------------------------------------------------
+extern "C" int main (int argc, char ** argv)
 {
 #if defined(_WIN32_WINNT_WIN10) && (_WIN32_WINNT >= _WIN32_WINNT_WIN10)		
         // and ... this is it ... really
@@ -13,6 +37,9 @@ extern "C" int main (int argc, char ** argv)
       __try 
     { 
         __try {
+
+               auto os_ver_struct = get_os_version();
+
                 dbj_main(argc,argv);
         }
         __finally {
@@ -74,5 +101,33 @@ DBJ_INFO(  ": _CPPUNWIND == 0");
 return EXIT_SUCCESS ;
 
 }
+/// --------------------------------------------------------------------------------
+extern "C" {
+
+    // actually the only sure-fire way to
+    // obtain windows version
+
+    typedef LONG NTSTATUS; // , * PNTSTATUS{};
+#define STATUS_SUCCESS (0x00000000)
+
+    typedef NTSTATUS(WINAPI* RtlGetVersionPtr)(osinfo_ptr);
+
+    osinfo get_os_version(void)
+    {
+        HMODULE hMod = ::GetModuleHandleA("ntdll.dll");
+        if (hMod) {
+            RtlGetVersionPtr fxPtr = (RtlGetVersionPtr)::GetProcAddress(hMod, "RtlGetVersion");
+            if (fxPtr != nullptr) {
+                osinfo osinfo_var_ = { 0 };
+                osinfo_var_.dwOSVersionInfoSize = sizeof(osinfo_var_);
+                if (STATUS_SUCCESS == fxPtr(&osinfo_var_)) {
+                    return osinfo_var_;
+                }
+            }
+        }
+        osinfo osinfo_var_ = { 0 };
+        return osinfo_var_;
+    }
 
 
+} // extern "C" {
