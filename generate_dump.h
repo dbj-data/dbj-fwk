@@ -42,36 +42,39 @@ inline void SomeFunction()
 extern "C" {
 #endif // __cplusplus
 
+#define GENERATE_DUMP_MAX_PATH 1024
+
 typedef struct generate_dump_last_run {
-    char  dump_folder_name[MAX_PATH] ; 
-    char  dump_file_name[MAX_PATH] ; 
+    char  dump_folder_name[GENERATE_DUMP_MAX_PATH] ; 
+    char  dump_file_name[GENERATE_DUMP_MAX_PATH] ; 
     BOOL finished_ok ;
 } generate_dump_last_run;
 
 static generate_dump_last_run dump_last_run ;
-static generate_dump_last_run dump_last_run_clean = { {0}, {0}, FALSE } ;
-
 /*
 DBJ: warning, currently this is a blocking call to an expensive function
 */
-static inline int GenerateDump(EXCEPTION_POINTERS* pExceptionPointers)
+inline int GenerateDump(EXCEPTION_POINTERS* pExceptionPointers)
 {
+static generate_dump_last_run dump_last_run_clean = { {0}, {0}, FALSE } ;
+
     dump_last_run = dump_last_run_clean  ;
 
-    char  szPath[MAX_PATH] = {0}; 
-    char  szFileName[MAX_PATH] = {0}; 
+    char  szPath[GENERATE_DUMP_MAX_PATH] = {0}; 
+    char  szFileName[GENERATE_DUMP_MAX_PATH] = {0}; 
     const char * szAppName = DBJ_APP_NAME;
     const char * szVersion = DBJ_APP_VERSION;
-    DWORD dwBufferSize = MAX_PATH;
-    HANDLE hDumpFile = 0 ;
+    DWORD dwBufferSize = GENERATE_DUMP_MAX_PATH;
     SYSTEMTIME stLocalTime;
     MINIDUMP_EXCEPTION_INFORMATION ExpParam;
+     HANDLE hDumpFile = NULL ;
+     BOOL mini_dump_rezult = FALSE ;
 
     GetLocalTime( &stLocalTime );
     GetTempPathA( dwBufferSize, szPath );
 
     win32_sprintf( szFileName, MAX_PATH, "%s%s", szPath, szAppName );
-    CreateDirectoryA( szFileName, NULL );
+    BOOL isDirCreated = CreateDirectoryA( szFileName, NULL );
 
     win32_sprintf( dump_last_run.dump_folder_name,  MAX_PATH, "%s", szFileName  );
 
@@ -84,16 +87,29 @@ static inline int GenerateDump(EXCEPTION_POINTERS* pExceptionPointers)
     hDumpFile = CreateFileA(szFileName, GENERIC_READ|GENERIC_WRITE, 
                 FILE_SHARE_WRITE|FILE_SHARE_READ, 0, CREATE_ALWAYS, 0, 0);
 
+    if (INVALID_HANDLE_VALUE == hDumpFile)
+    {
+    fprintf( stderr, "CreateFileA(%s) has failed with error code: %lu", szFileName, GetLastError());
+    goto exit;
+    }                
+
     win32_sprintf( dump_last_run.dump_file_name ,  MAX_PATH, "%s", szFileName  );
 
     ExpParam.ThreadId = GetCurrentThreadId();
     ExpParam.ExceptionPointers = pExceptionPointers;
     ExpParam.ClientPointers = TRUE;
 
-    BOOL bMiniDumpSuccessful = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), 
+    mini_dump_rezult = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), 
                     hDumpFile, MiniDumpWithDataSegs, &ExpParam, NULL, NULL);
+#ifdef _DEBUG
+    if (mini_dump_rezult == 0)
+    {
+    fprintf( stderr, "MiniDumpWriteDump() has failed with error code: %lu", GetLastError());
+    }
+#endif
 
-    dump_last_run.finished_ok = bMiniDumpSuccessful;
+    dump_last_run.finished_ok = mini_dump_rezult;
+exit:
     return EXCEPTION_EXECUTE_HANDLER;
 }
 

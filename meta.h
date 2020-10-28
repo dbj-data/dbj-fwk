@@ -1,8 +1,12 @@
 #pragma once
 /*
 no includes in here please
+
+CAUTION! DBJ_APP_NAME is used as folder name at one point
+, do not use chars that miust not be used in file/folder names
+
 */
-#define DBJ_APP_NAME "DBJ*FWK"
+#define DBJ_APP_NAME "DBJ+FWK"
 #define DBJ_APP_VERSION "1.0.0"
 #define DBJ_APP_OWNER "dbj@dbj.org"
 #define DBJ_APP_LICENSE "LICENSE_DBJ"
