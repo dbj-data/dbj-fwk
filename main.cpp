@@ -1,35 +1,16 @@
 // #include "../ubench.h/ubench.h"
 #include "dbj_main.h"
-/// --------------------------------------------------------------------------------
-#include <winnt.h>
+#include "dbj_win_lib.h"
 
-//typedef struct _OSVERSIONINFOA {
-//    DWORD dwOSVersionInfoSize;
-//    DWORD dwMajorVersion;
-//    DWORD dwMinorVersion;
-//    DWORD dwBuildNumber;
-//    DWORD dwPlatformId;
-//    CHAR   szCSDVersion[128];     // Maintenance string for PSS usage
-//} OSVERSIONINFOA, * POSVERSIONINFOA, * LPOSVERSIONINFOA;
-extern "C" {
-    typedef struct osinfo_struct {
-        long dwOSVersionInfoSize;
-        long dwMajorVersion;
-        long dwMinorVersion;
-        long dwBuildNumber;
-        long dwPlatformId;
-        char szCSDVersion[128];     // Maintenance string for PSS usage
-    } osinfo, * osinfo_ptr;
-
-    osinfo get_os_version(void);
-} // "C"
 
 /// --------------------------------------------------------------------------------
 extern "C" int main (int argc, char ** argv)
 {
+// "switch on" VT100 for WIN10 cmd.exe
+// an awfull hack
 #if defined(_WIN32_WINNT_WIN10) && (_WIN32_WINNT >= _WIN32_WINNT_WIN10)		
-        // and ... this is it ... really
-        // ps: make sure it is not empty string!
+// and this is it ... really
+// ps: make sure it is not empty string!
         system(" "); 
 #else
  // no op
@@ -38,36 +19,47 @@ extern "C" int main (int argc, char ** argv)
     { 
         __try {
 
-               auto os_ver_struct = get_os_version();
-
-                dbj_main(argc,argv);
-        }
-        __finally {
+    dbj_main(argc,argv);
+    }
+    __finally {
 #ifdef _DEBUG
-            DBJ_INFO(  ":  __finally block visited");
+    DBJ_INFO(  ":  __finally block visited");
 #endif // _DEBUG
         }
-    }
+    } // outer __try
     __except ( 
         GenerateDump(GetExceptionInformation())
         /* returns 1 aka EXCEPTION_EXECUTE_HANDLER */
       ) 
     { 
-        // MS STL "throws" are raised SE's under /kernel builds
-        // caught here and nowhere else in the app
-         DBJ_ERROR(  ": Structured Exception caught");
+    // MS STL "throws" are raised SE's under "no exceptions" builds
+    // they are best caught here and nowhere else in the app
+    DBJ_ERROR(  ": Structured Exception caught");
         
-        DBJ_WARN(  ": %s", 
-( dump_last_run.finished_ok == TRUE ? "minidump creation succeeded" : "minidump creation failed" ) 
-        );
-
         if ( dump_last_run.finished_ok ) {
+            DBJ_INFO(  ": Minidump creation succeeded");
             DBJ_INFO(  ": Dump folder: %s", dump_last_run.dump_folder_name );
             DBJ_INFO(  ": Dump file  : %s", dump_last_run.dump_file_name);
+        } else {
+            DBJ_WARN(  "Minidump creation failed" );
         }
     }
 
 #ifdef _DEBUG
+
+DBJ_INFO(  ":");
+DBJ_INFO(  ": DEBUG build");
+DBJ_INFO(  ":");
+
+#ifdef _DEBUG     
+    osinfo_struct os_ = get_os_version();
+    DBJ_INFO(  "WINDOWS : %ld.%ld.%ld [%ld]\n", os_.major, os_.minor, os_.build_num, os_.platform_id );          
+#endif // _DEBUG               
+
+#ifdef __clang__
+    DBJ_INFO(": %s ", __VERSION__  );          
+#endif // _DEBUG               
+
 
 #ifdef _KERNEL_MODE
 DBJ_INFO(  ": _KERNEL_MODE is defined");
@@ -94,40 +86,13 @@ DBJ_INFO(  ": _CPPUNWIND == 1");
 DBJ_INFO(  ": _CPPUNWIND == 0");
 #endif //! _CPPUNWIND 
 
-        DBJ_INFO( ": " DBJ_APP_NAME " " DBJ_APP_VERSION );
-        DBJ_INFO(  " ...Leaving... ");
+DBJ_INFO( ": " DBJ_APP_NAME " " DBJ_APP_VERSION );
+DBJ_INFO(  " ...Leaving... ");
+DBJ_INFO(  ":");
 #endif // _DEBUG
 
 return EXIT_SUCCESS ;
 
 }
 /// --------------------------------------------------------------------------------
-extern "C" {
 
-    // actually the only sure-fire way to
-    // obtain windows version
-
-    typedef LONG NTSTATUS; // , * PNTSTATUS{};
-#define STATUS_SUCCESS (0x00000000)
-
-    typedef NTSTATUS(WINAPI* RtlGetVersionPtr)(osinfo_ptr);
-
-    osinfo get_os_version(void)
-    {
-        HMODULE hMod = ::GetModuleHandleA("ntdll.dll");
-        if (hMod) {
-            RtlGetVersionPtr fxPtr = (RtlGetVersionPtr)::GetProcAddress(hMod, "RtlGetVersion");
-            if (fxPtr != nullptr) {
-                osinfo osinfo_var_ = { 0 };
-                osinfo_var_.dwOSVersionInfoSize = sizeof(osinfo_var_);
-                if (STATUS_SUCCESS == fxPtr(&osinfo_var_)) {
-                    return osinfo_var_;
-                }
-            }
-        }
-        osinfo osinfo_var_ = { 0 };
-        return osinfo_var_;
-    }
-
-
-} // extern "C" {
