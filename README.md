@@ -51,6 +51,7 @@ You still have the total control, but only of your program. What comes before is
     		- MS STL is not using C++ exceptions
     		- `try`/`throw`/`catch` are forbiden 
     		- In that scenario MS STL is **not** ISO standard 
+- DBJ_FWK_DISPLAY_INFO if defined, provokes guess what ;)
 
 ## The Roadmap
 

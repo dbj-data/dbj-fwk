@@ -38,7 +38,7 @@ extern "C"
     /// --------------------------------------------------------------------------------
     //
     // we emulate and return this, to the callers
-    // reason is mainly, we do not like agrarian notation
+    // reason is mainly, we do not like the agrarian notation
     //
     //typedef struct _OSVERSIONINFOA {
     //    DWORD size_info_;

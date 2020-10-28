@@ -22,9 +22,9 @@ extern "C" int main (int argc, char ** argv)
     dbj_main(argc,argv);
     }
     __finally {
-#ifdef _DEBUG
+#ifdef DBJ_FWK_DISPLAY_INFO
     DBJ_INFO(  ":  __finally block visited");
-#endif // _DEBUG
+#endif // DBJ_FWK_DISPLAY_INFO
         }
     } // outer __try
     __except ( 
@@ -45,7 +45,7 @@ extern "C" int main (int argc, char ** argv)
         }
     }
 
-#ifdef _DEBUG
+#ifdef DBJ_FWK_DISPLAY_INFO
 
 DBJ_INFO(  ":");
 DBJ_INFO(  ": DEBUG build");
@@ -68,19 +68,19 @@ DBJ_INFO(  ": _KERNEL_MODE is NOT defined");
 #endif // !_KERNEL_MODE
 
 
-#if _HAS_EXCEPTIONS
+#if (_HAS_EXCEPTIONS == 1)
 DBJ_INFO(  ": _HAS_EXCEPTIONS == 1");
 #else
 DBJ_INFO(  ": _HAS_EXCEPTIONS == 0");
 #endif // _HAS_EXCEPTIONS
 
-#if _CPPRTTI 
+#if (_CPPRTTI == 1)
 DBJ_INFO(  ": _CPPRTTI == 1");
 #else
 DBJ_INFO(  ": _CPPRTTI == 0");
 #endif // ! _CPPRTTI
 
-#if _CPPUNWIND 
+#if (_CPPUNWIND == 1)
 DBJ_INFO(  ": _CPPUNWIND == 1");
 #else // ! _CPPUNWIND 
 DBJ_INFO(  ": _CPPUNWIND == 0");
@@ -89,7 +89,7 @@ DBJ_INFO(  ": _CPPUNWIND == 0");
 DBJ_INFO( ": " DBJ_APP_NAME " " DBJ_APP_VERSION );
 DBJ_INFO(  " ...Leaving... ");
 DBJ_INFO(  ":");
-#endif // _DEBUG
+#endif // DBJ_FWK_DISPLAY_INFO
 
 return EXIT_SUCCESS ;
 
