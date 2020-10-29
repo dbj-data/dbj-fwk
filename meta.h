@@ -3,7 +3,7 @@
 no includes in here please
 
 CAUTION! DBJ_APP_NAME is used as folder name at one point
-, do not use chars that miust not be used in file/folder names
+, do not use chars that must not be used in file/folder names
 
 */
 #define DBJ_APP_NAME "DBJ+FWK"
