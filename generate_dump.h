@@ -74,7 +74,7 @@ static generate_dump_last_run dump_last_run_clean = { {0}, {0}, FALSE } ;
     GetTempPathA( dwBufferSize, szPath );
 
     win32_sprintf( szFileName, MAX_PATH, "%s%s", szPath, szAppName );
-    BOOL isDirCreated = CreateDirectoryA( szFileName, NULL );
+    /*BOOL isDirCreated = */CreateDirectoryA( szFileName, NULL );
 
     win32_sprintf( dump_last_run.dump_folder_name,  MAX_PATH, "%s", szFileName  );
 

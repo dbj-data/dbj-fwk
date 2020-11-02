@@ -95,6 +95,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -117,6 +118,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -142,6 +144,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -164,6 +167,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -177,6 +181,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\generate_dump.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
