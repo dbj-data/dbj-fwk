@@ -48,7 +48,11 @@ extern "C" int main (int argc, char ** argv)
 #ifdef DBJ_FWK_DISPLAY_INFO
 
 DBJ_INFO(  ":");
+#ifdef _DEBUG
 DBJ_INFO(  ": DEBUG build");
+#else
+DBJ_INFO(  ": RELEASE build");
+#endif
 DBJ_INFO(  ":");
 
 #ifdef _DEBUG     
