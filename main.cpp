@@ -55,14 +55,12 @@ DBJ_INFO(  ": RELEASE build");
 #endif
 DBJ_INFO(  ":");
 
-#ifdef _DEBUG     
-    osinfo_struct os_ = get_os_version();
+    osinfo_struct os_ = get_win_version();
     DBJ_INFO(  "WINDOWS : %ld.%ld.%ld [%ld]\n", os_.major, os_.minor, os_.build_num, os_.platform_id );          
-#endif // _DEBUG               
 
 #ifdef __clang__
     DBJ_INFO(": %s ", __VERSION__  );          
-#endif // _DEBUG               
+#endif // __clang__               
 
 
 #ifdef _KERNEL_MODE
