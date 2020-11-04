@@ -113,7 +113,7 @@ namespace dbj::win {
         BOOLEAN  in_TEXT;
         BOOLEAN  in_SPACE;
 
-        len = strlen(CmdLine);
+        len = (ULONG)strlen(CmdLine);
         i = ((len + 2) / 2) * sizeof(PVOID) + sizeof(PVOID);
 
         argv = (PCHAR*)LocalAlloc(GMEM_FIXED,

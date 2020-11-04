@@ -135,7 +135,7 @@ extern "C" int main (int argc, char ** argv)
 
 /// --------------------------------------------------------------------------------
 #ifdef _UNICODE
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
+extern "C" int WINAPI  wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
@@ -151,7 +151,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 }
 /// --------------------------------------------------------------------------------
 #else // ! _UNICODE
-int APIENTRY WinMain(_In_ HINSTANCE hInstance,
+extern "C" int WINAPI  WinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)

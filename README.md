@@ -3,11 +3,11 @@ Non Ambitious Windows (Server Side) App FWK
 
 &copy; 2020 by dbj@dbj.org
 
-> Purpose is to encapsulate and decouple SEH handling
+> Purpose is to encapsulate and decouple, top level SEH handling
 
 ## Usage
 
-This is VS static lib project. Currently it is to be used from console apps. 
+This is VS static lib project. 
 To use it you just need to provide implementation of one function (and link the lib of course):
 
 ```cpp
@@ -24,8 +24,16 @@ Yes, that might seem as a bad idea; `main()` is inside this library. But read th
 
 You still have the total control, but only of your program. What comes before is the infrastructure you do need *and* you do not want to get involved with.
 
-`nanoclib.h` does have some usefull macros and things inside; all optional. Not mandatory.
+This is to be built as VStudio 2019 solution
 
+NOTE: as ever we do only 
+- x64 builds
+- use static runtime library '/MT' or /MTd' for debug builds
+
+Purpose of `DBJ-FWK` is SEH top level implementation. SEH is always there. It just has to be used.
+
+This is WIN desktop App. Thus it has no console and stdio (C or C++) does not work. Thus 
+it has to use logging. No logging no output. Thus we log into the file.
 
 ## Features 
 
