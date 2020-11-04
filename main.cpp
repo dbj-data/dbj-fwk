@@ -1,10 +1,10 @@
 // #include "../ubench.h/ubench.h"
 #include "dbj_main.h"
 #include "dbj_win_lib.h"
-
+#include "win/win_cli_args.h"
 
 /// --------------------------------------------------------------------------------
-extern "C" int main (int argc, char ** argv)
+extern "C" static int before_dbj_main (int argc, char ** argv)
 {
 // "switch on" VT100 for WIN10 cmd.exe
 // an awfull hack
@@ -95,6 +95,43 @@ DBJ_INFO(  ":");
 
 return EXIT_SUCCESS ;
 
+} // before_dbj_main
+/// --------------------------------------------------------------------------------
+extern "C" int main (int argc, char ** argv)
+{
+    return before_dbj_main( argc, argv ) ;
+}
+
+/// --------------------------------------------------------------------------------
+#ifdef _UNICODE
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
+                     _In_opt_ HINSTANCE hPrevInstance,
+                     _In_ LPWSTR    lpCmdLine,
+                     _In_ int       nCmdShow)
+{
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
+
+    dbj::win::cli_args args_;
+
+    int rezult_ = before_dbj_main(args_.argc, args_.argv);
+
+    return rezult_ ;
 }
 /// --------------------------------------------------------------------------------
+#else // ! _UNICODE
+int APIENTRY WinMain(_In_ HINSTANCE hInstance,
+                     _In_opt_ HINSTANCE hPrevInstance,
+                     _In_ LPWSTR    lpCmdLine,
+                     _In_ int       nCmdShow)
+{
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
 
+    dbj::win::cli_args args_ ;
+
+    int rezult_ = before_dbj_main( args_.argc  , args_.argv);
+
+    return rezult_ ;
+}
+#endif // ! _UNICODE

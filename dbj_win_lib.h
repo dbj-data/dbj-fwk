@@ -2,34 +2,19 @@
 #define DBJ_WIN_LIB_INC_
 // (c) 2020 by dbj@dbj.org -- LICENSE_DBJ -- https://dbj.org/license_dbj
 
+//#ifdef __STDC_ALLOC_LIB__
+//#define __STDC_WANT_LIB_EXT2__ 1
+//#else
+//#define _POSIX_C_SOURCE 200809L
+//#endif
+
 #ifndef _WIN32
 #error This is WIN32 header, treat it as such
 #endif // ! _WIN32
 
-#ifdef __STDC_ALLOC_LIB__
-#define __STDC_WANT_LIB_EXT2__ 1
-#else
-#define _POSIX_C_SOURCE 200809L
-#endif
+#include "win/windows_includer.h"
 
 #include <io.h> // _isatty
-#include <crtdbg.h>
-#include <errno.h>
-#undef DBJ_PERROR
-#define DBJ_PERROR (perror(__FILE__ " # " _CRT_STRINGIZE(__LINE__)))
-
-/// there is no point in trying to avoid windows.h when on windows
-// so lets include it properly
-#define NOMINMAX
-#define STRICT 1
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
-#undef min
-#define min(x, y) ((x) < (y) ? (x) : (y))
-
-#undef max
-#define max(x, y) ((x) > (y) ? (x) : (y))
 
 /// --------------------------------------------------------------------------------
 /* bool might require <stdbool.h> */
