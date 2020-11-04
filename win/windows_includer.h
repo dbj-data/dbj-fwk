@@ -1,6 +1,8 @@
 #pragma once
 #ifndef DBJ_WINDOWS_INCLUDE_INC_
 #define DBJ_WINDOWS_INCLUDE_INC_
+
+#include "../wallofmacros.h"
 /*
 (c) 2019-2020 by dbj.org   -- LICENSE DBJ -- https://dbj.org/license_dbj/
 
@@ -60,31 +62,15 @@ set the WINVER and _WIN32_WINNT macros to the oldest supported platform
 #define max(x, y) ((x) > (y) ? (x) : (y))
 #endif // DBJ_MINIMAX
 
-#undef DBJ_ASSERT
-#define DBJ_ASSERT _ASSERTE
+// https://devblogs.microsoft.com/oldnewthing/20041025-00/?p=37483
+EXTERN_C IMAGE_DOS_HEADER __ImageBase;
+#undef  HINST_THISCOMPONENT
+#define HINST_THISCOMPONENT ((HINSTANCE)&__ImageBase)
 
-
-#undef DBJ_PERROR
-#define DBJ_PERROR (perror(__FILE__ " # " _CRT_STRINGIZE(__LINE__)))
-
-// ALWAYS WORKS!!! in release builds too, be carefull!
-// NOTE: this is wide string version
-#ifndef DBJ_VERIFY
-#define DBJ_VERIFY(expr, msg) \
-(void)(                                                                                     \
-    (!!(expr)) ||                                                                           \
-    (1 != _CrtDbgReportW(_CRT_ASSERT, _CRT_WIDE(__FILE__), __LINE__, NULL, L"%ls", msg)) || \
-    (_CrtDbgBreak(), 0)                                                                     \
-)
-#endif
-
-#ifndef DBJ_VERIFYX
-#define DBJ_VERIFYX(x) DBJ_VERIFY((x), _CRT_WIDE(#x) )
-#endif //! DBJ_VERIFYX
-
-// Here's a better C version (from Google's Chromium project):
-#define DBJ_COUNT_OF(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
-
+/*
+NOTE: the following is deliberately decoupled,
+from what is in win_cli_args.h
+*/
 static inline const wchar_t* const this_app_full_path_w()
 {
 	static wchar_t full_path[1024] = { L'\0' };

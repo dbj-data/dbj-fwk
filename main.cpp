@@ -4,17 +4,10 @@
 #include "win/win_cli_args.h"
 
 /// --------------------------------------------------------------------------------
-extern "C" static int before_dbj_main (int argc, char ** argv)
+/// in here we solve the SE catching (if SE raised) and minidump generation
+extern "C" static int seh_main (int argc, char ** argv)
 {
-// "switch on" VT100 for WIN10 cmd.exe
-// an awfull hack
-#if defined(_WIN32_WINNT_WIN10) && (_WIN32_WINNT >= _WIN32_WINNT_WIN10)		
-// and this is it ... really
-// ps: make sure it is not empty string!
-        system(" "); 
-#else
- // no op
-#endif
+
       __try 
     { 
         __try {
@@ -95,12 +88,50 @@ DBJ_INFO(  ":");
 
 return EXIT_SUCCESS ;
 
-} // before_dbj_main
+} // seh_main
+
 /// --------------------------------------------------------------------------------
+/*
+WCHAR policy : ignore it :)
+
+all the main version bellow caputre char ** argv
+and send it intto the FWK
+
+end user is providing implementation for:
+extern "C" int program (int argc, char ** argv) ;
+
+as far as user is concetned, that is the entry point
+*/
+#ifdef _UNICODE
+extern "C" int wmain (int argc, wchar_t ** argv)
+{
+// "switch on" VT100 for WIN10 cmd.exe
+// an awfull hack
+#if defined(_WIN32_WINNT_WIN10) 
+// and this is it ... really
+// ps: make sure it is not empty string!
+        system(" "); 
+#else
+ // no op
+#endif
+    dbj::win::cli_args args_;
+        int rezult_ = seh_main(args_.argc, args_.argv);
+}
+#else // ! _UNICODE
 extern "C" int main (int argc, char ** argv)
 {
-    return before_dbj_main( argc, argv ) ;
+// "switch on" VT100 for WIN10 cmd.exe
+// an awfull hack
+#if defined(_WIN32_WINNT_WIN10) 
+// and this is it ... really
+// ps: make sure it is not empty string!
+        system(" "); 
+#else
+ // no op
+#endif
+    return seh_main( argc, argv ) ;
 }
+#endif // ! _UNICODE
 
 /// --------------------------------------------------------------------------------
 #ifdef _UNICODE
@@ -114,7 +145,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     dbj::win::cli_args args_;
 
-    int rezult_ = before_dbj_main(args_.argc, args_.argv);
+    int rezult_ = seh_main(args_.argc, args_.argv);
 
     return rezult_ ;
 }
@@ -130,7 +161,7 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance,
 
     dbj::win::cli_args args_ ;
 
-    int rezult_ = before_dbj_main( args_.argc  , args_.argv);
+    int rezult_ = seh_main( args_.argc  , args_.argv);
 
     return rezult_ ;
 }

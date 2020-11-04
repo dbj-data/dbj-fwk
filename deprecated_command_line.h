@@ -1,5 +1,8 @@
 #pragma once
 
+// DEPRECATED
+#if 0
+
 #include "nanoclib.h"
 
 /*
@@ -75,3 +78,5 @@ struct command_line final {
        return  _strdup( last_delim_pos + 1) ;
     }
 }; // command_line
+
+#endif // 0

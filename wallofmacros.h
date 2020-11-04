@@ -3,7 +3,16 @@
 #define DBJ_NANOC_INCLUDED
 /*
    (c) 2019-2020 by dbj.org   -- LICENSE DBJ -- https://dbj.org/license_dbj/
+
+   NOTE! the win part also includes this
 */
+
+#ifdef __STDC_ALLOC_LIB__
+#define __STDC_WANT_LIB_EXT2__ 1
+#else // ! __STDC_ALLOC_LIB__
+#define _POSIX_C_SOURCE 200809L
+#endif // ! __STDC_ALLOC_LIB__
+
 // -----------------------------------------------------------------------------
 #include "vt100.h"
 
@@ -22,6 +31,12 @@
 #else
 #define DBJ_PURE_FUNCTION 
 #endif
+
+// Here's a better C version (from Google's Chromium project):
+
+#undef   DBJ_COUNT_OF
+#define DBJ_COUNT_OF(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -103,6 +118,22 @@ if (ferror(FP_) != 0) {\
 
 #define DBJ_VERIFY(x) DBJ_VERIFY_(x, __FILE__, __LINE__)
 
+// NOTE: this is wide string version
+#undef DBJ_DEBUG_REPORTW
+#define DBJ_DEBUG_REPORTW(expr, msg) \
+(void)(                                                                                     \
+    (!!(expr)) ||                                                                           \
+    (1 != _CrtDbgReportW(_CRT_ASSERT, _CRT_WIDE(__FILE__), __LINE__, NULL, L"%ls", msg)) || \
+    (_CrtDbgBreak(), 0)                                                                     \
+)
+
+
+// NOTE: notice the transformation to WCHAR and calling 
+// DBJ_VERIFY which is WCHAR only
+#undef DBJ_DEBUG_REPORT
+#define DBJ_DEBUG_REPORT(x) DBJ_DEBUG_REPORTW((x), _CRT_WIDE(#x) )
+
+
 /*
 we use the macros bellow to create ever needed location info always
 associated with the offending expression
@@ -172,7 +203,7 @@ to show us VT100 colours
 */
 	inline void dbj_nanoc_win_vt100_initor_ () {
 #if (_WIN32_WINNT >= _WIN32_WINNT_WIN10)		
-        // and ... this is it ... really
+        // and ... this is it ... awfull really ;)
         // ps: make sure it is not empty string!
         system(" "); 
 #else

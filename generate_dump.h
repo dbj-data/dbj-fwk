@@ -24,7 +24,7 @@ inline void SomeFunction()
 }
 */
 
-#include <windows.h>
+#include "win/windows_includer.h"
 
 #include <assert.h>
 #include <dbghelp.h>

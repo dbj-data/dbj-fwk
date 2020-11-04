@@ -92,7 +92,7 @@ namespace dbj::win {
 
     /*
     * for some reason it is not on MS DOCS any more 
-    * and not in Win32
+    * and not in Win32 any more
     */
 
     // http://alter.org.ua/docs/win/args/

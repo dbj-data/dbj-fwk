@@ -3,12 +3,8 @@
 whatever /kernel or no /EHsc build needs or might need
 */
 #include "meta.h"
-#include "command_line.h"
 #include "generate_dump.h"
 #include "vt100.h"
-#include "nanoclib.h"
-
-#include <stdio.h>
 
 // Depending on _HAS_EXCEPTIONS
 // MS STL transforms to non standard  std lib
@@ -88,12 +84,10 @@ extern "C" inline int dbj_main(int argc, char **argv) {
 #if _CPPUNWIND
   try {
 #endif
-    errno = 0;
-    // command_line cli(argc,argv); // currently not in use
-
     return program(argc, argv);
 #if _CPPUNWIND
   } catch (...) {
+   // TODO: user defined callback should be allowed here?
     DBJ_ERROR("Unknown Exception!");
   }
 #endif
