@@ -95,7 +95,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalOptions>/D_HAS_EXCEPTIONS=0  /DDBJ_FWK_DISPLAY_INFO  /DWINVER=0x0A00 /D_WIN32_WINNT=0x0A00</AdditionalOptions>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0  /DDBJ_FWK_DISPLAY_INFO</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -118,7 +118,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalOptions>/D_HAS_EXCEPTIONS=0  /DDBJ_FWK_DISPLAY_INFO  /DWINVER=0x0A00 /D_WIN32_WINNT=0x0A00</AdditionalOptions>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0  /DDBJ_FWK_DISPLAY_INFO</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -144,7 +144,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalOptions>/D_HAS_EXCEPTIONS=0  /DDBJ_FWK_DISPLAY_INFO  /DWINVER=0x0A00 /D_WIN32_WINNT=0x0A00</AdditionalOptions>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0  /DDBJ_FWK_DISPLAY_INFO</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -167,7 +167,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalOptions>/D_HAS_EXCEPTIONS=0  /DDBJ_FWK_DISPLAY_INFO  /DWINVER=0x0A00 /D_WIN32_WINNT=0x0A00</AdditionalOptions>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0  /DDBJ_FWK_DISPLAY_INFO</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
