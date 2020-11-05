@@ -68,13 +68,13 @@ Windows desktop App users need also to include `dbj_fwk.h`.
 
 Example usage project [DBJWINAPP](https://github.com/dbj-data/dbjwinapp) contains the `program()` entry point for standard Win32 UI desktop app. It is in the `program.cpp`.
 
-You command line switches will also work. It is simply you do not start from your main any more.
+Your command line switches will also work. It is simply, you do not start from your main any more.
 
-Yes, that might seem as a bad idea; `main()` is inside this library. But you still have the total control; it is only the focus is on your program. What comes before the `program()` function, is the infrastructure you do need *and* you do not want to get involved with.
+Yes, that might seem as a bad idea; `main()` inside the library. But you still have the total control; it is only the your focus is on your program. What comes before the `program()` function, is the infrastructure you do need *and* you do not want to get involved with.
 
 This is to be built as VStudio 2019 solution
 
-### As ever we do only 
+As ever we do only 
 
 - x64 builds
 - use static runtime library '/MT' or /MTd' for debug builds
@@ -111,7 +111,7 @@ Here is our own benchmarking console app screen dump:
 
 ![bench](./media/bench.png)
 
-If you do want or not want that seen at compile time use this switch `DBJ_FWK_DISPLAY_INFO`. Absence of this will result in no info display.
+If you do want or not want that seen, at compile time use this switch `DBJ_FWK_DISPLAY_INFO`. Absence of it will result in no info display.
 
 ## The Roadmap
 
