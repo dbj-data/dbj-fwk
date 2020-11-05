@@ -12,6 +12,10 @@ extern "C" static int seh_main (int argc, char ** argv)
     { 
         __try {
 
+#if defined(DBJ_FWK_USES_SIMPLELOG)
+            dbj_simple_log_startup( argv[0] );
+#endif
+
     dbj_main(argc,argv);
     }
     __finally {
