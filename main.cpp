@@ -102,7 +102,9 @@ extern "C" int program (int argc, char ** argv) ;
 
 as far as user is concetned, that is the entry point
 */
-#ifdef _UNICODE
+
+// #ifdef _UNICODE
+
 extern "C" int wmain (int argc, wchar_t ** argv)
 {
 // "switch on" VT100 for WIN10 cmd.exe
@@ -117,7 +119,9 @@ extern "C" int wmain (int argc, wchar_t ** argv)
     dbj::win::cli_args args_;
         int rezult_ = seh_main(args_.argc, args_.argv);
 }
-#else // ! _UNICODE
+
+//#else // ! _UNICODE
+
 extern "C" int main (int argc, char ** argv)
 {
 // "switch on" VT100 for WIN10 cmd.exe
@@ -131,7 +135,8 @@ extern "C" int main (int argc, char ** argv)
 #endif
     return seh_main( argc, argv ) ;
 }
-#endif // ! _UNICODE
+
+// #endif // ! _UNICODE
 
 /// --------------------------------------------------------------------------------
 #ifdef _UNICODE
