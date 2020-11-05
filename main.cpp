@@ -95,7 +95,7 @@ return EXIT_SUCCESS ;
 WCHAR policy : ignore it :)
 
 all the main version bellow caputre char ** argv
-and send it intto the FWK
+and send it into the FWK
 
 end user is providing implementation for:
 extern "C" int program (int argc, char ** argv) ;
