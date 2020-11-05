@@ -31,23 +31,27 @@ At this stage you need Visual Studio 2019. Community edition is free. You can op
 
 ![vs dmp](./media/vsminidump.png)
 
-Perhaps not very usefull for 99% of population. But in the upper right corner there is this "Debug with Native" link:
+Perhaps not very usefull for 99% of population. But in the upper right corner there is that "Debug with Native" link.
 
-![native debug link](./media/vsnativedebuglink.png)
-
-Click on that and you will be taken to the exact location of the cause for which SE wa raised. If that is in your source that is immensely usefull. 
+Click on that and you will be taken to the exact location of the cause for which SE was raised. And that is immensely usefull. 
 
 ### Remember
 
-this is not C++ exceptions. This is OS native exceptions. Thus it can catch "anything" wrong you or anybody can (and will) do. Much more than disciplined C++ use of exceptions can and will. And it is always there. **DBJ+FWK** makes it much easier for you to use this functionality (temporarily or not ) and focus on your code. Desktop UI app or console, it does not matter.
+this is not C++ exceptions. This is OS native exceptions. Thus it can catch "anything" wrong you or anybody can (and will) do. Much more than disciplined C++ ans use of C++ exceptions can and will. And it is always there. 
+
+**DBJ+FWK** makes it much easier for you to use this functionality (temporarily or not ) and focus on your code. Desktop UI app or console, it does not matter.
 
 ### The real life use-case
 
-We use this as a permanent host for our testing and benchmarking code. Which is for us always some console app. Thus in that mode, we also pinpoint a much more of issues and bugs while developing, than usually possible. 
+We use this as a permanent host for our testing and benchmarking code. Which is for us always a console app. Thus in that mode, we also pinpoint a much more of issues and bugs while developing, than uspreviously possible. 
+
+![bench](./media/bench.png)
+
+[dbj-bench](https://github.com/dbj-data/dbj-bench/tree/master) in action. Basically a combination of our fork of [UBENCH](https://github.com/dbj-data/ubench) and DBJ+FWK.
 
 ## How to use
 
-This is Windoes 64 bit, static lib project.  To use it in your projects, you just need to provide implementation of one function (and link the lib of course):
+This is Windows 64 bit, static lib project.  To use it in your projects, you just need to provide implementation of one function (and link the lib of course):
 
 ```cpp
 // user code starts here
