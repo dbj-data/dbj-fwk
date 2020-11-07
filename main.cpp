@@ -11,9 +11,6 @@ extern "C" static int seh_main(int argc, char** argv)
 	{
 		__try {
 
-#if defined(DBJ_FWK_USES_SIMPLELOG)
-			dbj_simple_log_startup(argv[0]);
-#endif
 			dbj_main(argc, argv);
 
 		} // inner __try
@@ -90,7 +87,9 @@ extern "C" static int seh_main(int argc, char** argv)
 #endif // DBJ_FWK_DISPLAY_INFO
 
 #if defined(DBJ_FWK_USES_SIMPLELOG)
+#ifndef __clang__
 	dbj_log_finalize();
+#endif
 #endif
 
 	return EXIT_SUCCESS;
