@@ -5,7 +5,7 @@
 
 /// --------------------------------------------------------------------------------
 /// in here we solve the SE catching (if SE raised) and minidump generation
-extern "C" static int seh_main(int argc, char** argv)
+static int seh_main(int argc, char** argv)
 {
 	__try
 	{
@@ -117,7 +117,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
  // no op
 #endif
 	dbj::win::cli_args args_;
-	int rezult_ = seh_main(args_.argc, args_.argv);
+	return seh_main(args_.argc, args_.argv);
 }
 
 //#else // ! _UNICODE
@@ -149,10 +149,7 @@ extern "C" int WINAPI  wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	dbj::win::cli_args args_;
-
-	int rezult_ = seh_main(args_.argc, args_.argv);
-
-	return rezult_;
+	return seh_main(args_.argc, args_.argv);
 }
 /// --------------------------------------------------------------------------------
 #else // ! _UNICODE
@@ -165,9 +162,6 @@ extern "C" int WINAPI  WinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	dbj::win::cli_args args_;
-
-	int rezult_ = seh_main(args_.argc, args_.argv);
-
-	return rezult_;
+	return seh_main(args_.argc, args_.argv);
 }
 #endif // ! _UNICODE
