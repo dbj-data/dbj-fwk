@@ -86,12 +86,6 @@ extern "C" static int seh_main(int argc, char** argv)
 	DBJ_INFO(":");
 #endif // DBJ_FWK_DISPLAY_INFO
 
-#if defined(DBJ_FWK_USES_SIMPLELOG)
-#ifndef __clang__
-	dbj_log_finalize();
-#endif
-#endif
-
 	return EXIT_SUCCESS;
 
 } // seh_main

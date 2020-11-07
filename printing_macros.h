@@ -1,8 +1,8 @@
 #pragma once
 
 #if defined(DBJ_FWK_USES_SIMPLELOG)
-// -----------------------------------------------------------------------------
-#define  DBJ_LOG_DEFAULT_SETUP DBJ_LOG_DEFAULT_WITH_CONSOLE
+// NOTE: host app includes dbj_simple_log_host.h
+
 #define DBJ_SIMPLELOG_USER_DEFINED_MACRO_NAMES
 #include "../dbj--simplelog/dbj_simple_log.h"
 
