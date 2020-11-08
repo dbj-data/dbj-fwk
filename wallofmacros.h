@@ -107,38 +107,21 @@ if (ferror(FP_) != 0) {\
 
 // -----------------------------------------------------------------------------
 #undef DBJ_ASSERT
-#define DBJ_ASSERT _ASSERTE
-
-//
-// CAUTION! DBJ_VERIFY works in release builds too
-#undef DBJ_VERIFY
-#undef DBJ_VERIFY_
-
-#define DBJ_VERIFY_(x, file, line) \
-	if (false == x)                \
-	dbj_nanoc_terror("Expression: " #x ", failed ", file, line)
-
-#define DBJ_VERIFY(x) DBJ_VERIFY_(x, __FILE__, __LINE__)
-
-// NOTE: this is wide string version
-#undef DBJ_DEBUG_REPORTW
-#define DBJ_DEBUG_REPORTW(expr, msg) \
-(void)(                                                                                     \
-    (!!(expr)) ||                                                                           \
-    (1 != _CrtDbgReportW(_CRT_ASSERT, _CRT_WIDE(__FILE__), __LINE__, NULL, L"%ls", msg)) || \
-    (_CrtDbgBreak(), 0)                                                                     \
-)
-
-
-// NOTE: notice the transformation to WCHAR and calling 
-// DBJ_VERIFY which is WCHAR only
-#undef DBJ_DEBUG_REPORT
 #ifdef _DEBUG
-#define DBJ_DEBUG_REPORT(x) DBJ_DEBUG_REPORTW((x), _CRT_WIDE(#x) )
+#define DBJ_ASSERT _ASSERTE
 #else
-#define DBJ_DEBUG_REPORT(x) 
+	#define	DBJ_ASSERT(X_) ((void)(X_))
 #endif
 
+//
+// CAUTION! DBJ_VERIFY affects release builds too
+//  _ASSERT_AND_INVOKE_WATSON asserts in debug builds
+//  in release builds invokes watson
+#undef DBJ_VERIFY
+#define DBJ_VERIFY(x) _ASSERT_AND_INVOKE_WATSON(x)
+
+// debug break if expression yields false
+// NOTE: this is wide string version
 
 /*
 we use the macros bellow to create ever needed location info always
