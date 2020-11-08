@@ -116,12 +116,9 @@ if (ferror(FP_) != 0) {\
 //
 // CAUTION! DBJ_VERIFY affects release builds too
 //  _ASSERT_AND_INVOKE_WATSON asserts in debug builds
-//  in release builds invokes watson
+//  in release builds it invokes watson
 #undef DBJ_VERIFY
 #define DBJ_VERIFY(x) _ASSERT_AND_INVOKE_WATSON(x)
-
-// debug break if expression yields false
-// NOTE: this is wide string version
 
 /*
 we use the macros bellow to create ever needed location info always
