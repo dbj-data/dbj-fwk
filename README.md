@@ -1,7 +1,7 @@
 
 # DBJ+FWK
 
-Non Ambitious Windows App Framework
+Non Ambitious Windows App's Framework
 
 &copy; 2020 by dbj@dbj.org
 
@@ -11,11 +11,9 @@ Why would anybody care for that?
 
 SEH is intrinsic part of Windows. It is also intrinsic part of Microsoft C/C++ compiler, a.k.a. CL (cl.exe). Thus it is always there. In any kind of Windows executable.
 
-By managing raised Structured Execeptions (SE) in your main you are in total control. C or C++. Stack overflow, division with zero, etc. All this "things" and more, are caught by the SEH. You just have to handle them.
+By managing raised Structured Execeptions (SE) in your apps you are in total control. C or C++. Stack overflow, division with zero, etc. All this "things" and more, are caught by the SEH. You just have to handle them.
 
-In here we have encapsulated all of that for you. 
-
-We create a minidump in case of SE caught. You are informed with full path where is that *.dmp file saved. 
+In here we have encapsulated all of that handling for you. And more. We create a minidump in case of SE caught. Users are informed with full path where is that *.dmp file saved. 
 
 All the dmp (aka minidump) files are stored in 
 
@@ -25,7 +23,7 @@ All the dmp (aka minidump) files are stored in
 
 ![dmp files](./media/dmp_files.png)
 
-Each minidump creation creates a new minidump. You can easily see the time stamp in those file names.
+Each minidump creation creates a new minidump file. You can easily see the time stamp in those file names.
 
 At this stage you need Visual Studio 2019. Community edition is free. You can open the last dmp or any of them using Visual Studio 2019. Just double click on it. And then you will see the highly technical details:
 
@@ -33,17 +31,17 @@ At this stage you need Visual Studio 2019. Community edition is free. You can op
 
 Perhaps not very usefull for 99% of population. But in the upper right corner there is that "Debug with Native" link.
 
-Click on that and you will be taken to the exact location of the cause for which SE was raised. And that is immensely usefull. 
+Click on that and you will be taken to the exact location of the cause for which SE was raised. And that is immensely usefull. Yes, in 99% of occassions that will be in your code :wink:
 
 ### Remember
 
-this is not C++ exceptions. This is OS native exceptions. Thus it can catch "anything" wrong you or anybody can (and will) do. Much more than disciplined C++ ans use of C++ exceptions can and will. And it is always there. 
+SEH is not C++ exceptions. This is OS native exceptions. Thus SEH implemented in your app can catch "anything" wrong you or anybody can (and will) do. Much more than disciplined C++ and use of C++ exceptions can and will. And it is always there. 
 
-**DBJ+FWK** makes it much easier for you to use this functionality (temporarily or not ) and focus on your code. Desktop UI app or console, it does not matter.
+**DBJ+FWK** makes it much easier for you to use this functionality and focus on your code. Desktop UI app or console, it does not matter.
 
 ### The real life use-case
 
-We use this as a permanent host for our testing and benchmarking code. Which is for us always a console app. Thus in that mode, we also pinpoint a much more of issues and bugs while developing, than uspreviously possible. 
+We use this in a host app for our testing and benchmarking needs. Which is for us always a console app. Thus in that mode, we also pinpoint a much more of issues and bugs while developing, than previously possible. 
 
 ![bench](./media/bench.png)
 
@@ -51,7 +49,7 @@ We use this as a permanent host for our testing and benchmarking code. Which is 
 
 ## How to use
 
-This is Windows 64 bit, static lib project.  To use it in your projects, you just need to provide implementation of one function (and link the lib of course):
+This is Windows 64 bit, static lib project.  To use it in your projects, you just need to provide implementation of one function (and link the dbj+fwk lib of course):
 
 ```cpp
 // user code starts here
@@ -64,17 +62,17 @@ extern "C" int program (int argc , char ** argv )
 }
 ```
 
-Windows desktop App users need also to include `dbj_fwk.h`. 
+Windows desktop App users also need to include `dbj_fwk.h`. 
 
-Example usage project [DBJWINAPP](https://github.com/dbj-data/dbjwinapp) contains the `program()` entry point for standard Win32 UI desktop app. It is in the `program.cpp`.
+Example project [DBJWINAPP](https://github.com/dbj-data/dbjwinapp) contains the `program()` entry point for standard Win32 UI desktop app. It is in the `program.cpp`.
 
 Your command line switches will also work. It is simply, you do not start from your main any more.
 
-Yes, that might seem as a bad idea; `main()` inside the library. But you still have the total control; it is only the your focus is on your program. What comes before the `program()` function, is the infrastructure you do need *and* you do not want to get involved with.
+Yes, that might seem as a bad idea; `main()` inside the library. But you still have the total control; it is only that your focus is on your program. What comes before the `program()` function, is the infrastructure you do need *and* you do not want to get involved with.
 
 This is to be built as VStudio 2019 solution
 
-As ever we do only 
+As ever we only do:
 
 - x64 builds
 - use static runtime library '/MT' or /MTd' for debug builds
@@ -86,15 +84,15 @@ As ever we do only
 	- catch the SE
 		- do the `__finally` block
 		- create the minidump on the local machine
-		- inform the user where is this miniidump and how is it called
+		- inform the user where is this minidump and how is it called
 - Visual Studio (2019) opens and uses the minidump files
 	- part of that experience is VS native debugging, allowing you to pinpoint the exact issue
-	- In case you missed it: 
-    	- SEH is not C++ exceptions
-    	- SEH is present in any Windows executable
-    	- SEH catches **everything** : stack abuse, division with zero and a such
-        	- there are no standard C++ code for that
-    	- SEH works with C code too
+- In case you missed it: 
+   	- SEH is not C++ exceptions
+   	- SEH is present in any Windows executable
+   	- SEH catches **everything** : stack abuse, division with zero and a such
+       	- there are no standard C++ code for that
+   	- SEH works with C code too
     	- And "the 'gasp!' moment"
     		- MS STL is raising SE when 
 		`_HAS_EXCEPTIONS == 0`
@@ -113,9 +111,9 @@ Here is our own benchmarking console app screen dump:
 
 If you do want or not want that seen, at compile time use this switch `DBJ_FWK_DISPLAY_INFO`. Absence of it will result in no info display.
 
-## The Roadmap
+## The Output
 
-DBJ+FWK can be used in WIN desktop App. In that case there is no console and stdio does not work. Thus we have to use logging. No logging no output. The plan is to log into the file for Windows App hosts.
+DBJ+FWK can be used in WIN desktop App. In that case there is no console and stdio does not work. Thus we have to use logging. No logging no output. We do use `dbj--simplelog`.
 
 We wil decouple the logging component choice, so that users might use their own.
 
