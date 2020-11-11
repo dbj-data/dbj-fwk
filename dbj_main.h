@@ -81,15 +81,15 @@ SEH buils. As SEH is intrinsic to Windows.
 
 */
 extern "C" inline int dbj_main(int argc, char **argv) {
-#if _CPPUNWIND
+#if _HAS_EXCEPTIONS
   try {
 #endif
     return program(argc, argv);
-#if _CPPUNWIND
+#if _HAS_EXCEPTIONS
   } catch (...) {
    // TODO: user defined callback should be allowed here?
     DBJ_ERROR("Unknown Exception!");
   }
-#endif
+#endif // _HAS_EXCEPTIONS
   return 0;
 } // main
