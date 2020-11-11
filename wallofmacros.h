@@ -148,7 +148,7 @@ NOTE: all the bets are of so no point of using some logging
 	{
 		/// DBJ_ASSERT(msg_ && file_ && line_);
 		/// all the bets are of so no point of using some logging
-		perror("\n\n" DBJ_ERR_PROMPT("\n\ndbj NANOCLIB Terminating error!"));
+		perror("\n\n" DBJ_ERR_PROMPT("\n\nTerminating error!"));
 		exit(EXIT_FAILURE);
 	}
 
