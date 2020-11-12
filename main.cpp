@@ -51,11 +51,27 @@ static int seh_main(int argc, char** argv)
 	DBJ_INFO(":");
 
 	osinfo_struct os_ = get_win_version();
-	DBJ_INFO("WINDOWS : %ld.%ld.%ld [%ld]\n", os_.major, os_.minor, os_.build_num, os_.platform_id);
+	DBJ_INFO(": %s: %ld.%ld.%ld [%ld]", "WINDOWS", os_.major, os_.minor, os_.build_num, os_.platform_id);
 
 #ifdef __clang__
 	DBJ_INFO(": %s ", __VERSION__);
 #endif // __clang__               
+
+#ifdef _MSC_FULL_VER 
+	DBJ_INFO(": %s: %d ", "_MSC_FULL_VER" , _MSC_FULL_VER);
+#endif // _MSC_FULL_VER                
+
+#ifdef __cplusplus  
+	DBJ_INFO(": __cplusplus  : %d", __cplusplus);
+#else // ! __cplusplus  
+	DBJ_INFO(": __cplusplus  is NOT defined");
+#endif // !__cplusplus  
+
+#ifdef __STDC_VERSION__ 
+	DBJ_INFO(": __STDC_VERSION__ : %d", __STDC_VERSION__ );
+#else // ! __STDC_VERSION__ 
+	DBJ_INFO(": __STDC_VERSION__ is NOT defined");
+#endif // !__STDC_VERSION__ 
 
 #ifdef _KERNEL_MODE
 	DBJ_INFO(": _KERNEL_MODE is defined");
@@ -75,14 +91,14 @@ static int seh_main(int argc, char** argv)
 	DBJ_INFO(": _CPPRTTI == 0");
 #endif // ! _CPPRTTI
 
-#if (_CPPUNWIND == 1)
-	DBJ_INFO(": _CPPUNWIND == 1");
+#ifdef _CPPUNWIND
+	DBJ_INFO(": _CPPUNWIND is defined");
 #else // ! _CPPUNWIND 
-	DBJ_INFO(": _CPPUNWIND == 0");
+	DBJ_INFO(": _CPPUNWIND is not defined");
 #endif //! _CPPUNWIND 
 
 	DBJ_INFO(": " DBJ_APP_NAME " " DBJ_APP_VERSION);
-	DBJ_INFO(" ...Leaving... ");
+	DBJ_INFO(":...Leaving... ");
 	DBJ_INFO(":");
 #endif // DBJ_FWK_DISPLAY_INFO
 
