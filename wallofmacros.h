@@ -47,8 +47,11 @@ extern "C" {
 
 /// https://stackoverflow.com/a/29253284/10870835
 
-#if (! defined (_DEBUG)) &&  (! defined (NDEBUG))
-#error  NDEBUG *is* standard macro and has to exist.
+// NDEBUG *is* standard macro and has to exist.
+#if ! defined (_DEBUG) 
+#if ! defined (NDEBUG)
+#define NDEBUG
+#endif
 #endif
 
 #undef DBJ_RELEASE_BUILD
