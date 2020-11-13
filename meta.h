@@ -14,4 +14,7 @@ CAUTION! DBJ_APP_NAME is used as folder name at one point
 
 #pragma comment( user, DBJ_APP_COPYRIGHT ", " DBJ_APP_NAME "[" DBJ_APP_VERSION "] compiled by " DBJ_APP_OWNER  " on " __DATE__ " at " __TIME__ )
 
+// command line args understood by DBJ+FWK
+#define DBJ_CL_ARG_SHOW_BUILD_ENV  "--fwk-buildenv"
+
 // EOF

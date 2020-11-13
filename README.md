@@ -109,7 +109,7 @@ Here is our own benchmarking console app screen dump:
 
 ![bench](./media/bench.png)
 
-If you do want or not want that seen, at compile time use this switch `DBJ_FWK_DISPLAY_INFO`. Absence of it will result in no info display.
+If you do want or not want that information at the bottom seen, use this command line switch `--fwk-buildenv`. On the host app of course, this is just a lib. Absence of it will result in no info display.
 
 ## The Output
 

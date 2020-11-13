@@ -3,45 +3,8 @@
 #include "win/win_cli_args.h"
 // above we do #include "win/windows_includer.h"
 
-/// --------------------------------------------------------------------------------
-/// in here we solve the SE catching (if SE raised) and minidump generation
-static int seh_main(int argc, char** argv)
+static void display_build_env(const char* /*cli_arg_*/)
 {
-	__try
-	{
-		__try {
-
-			dbj_main(argc, argv);
-
-		} // inner __try
-		__finally {
-#ifdef DBJ_FWK_DISPLAY_INFO
-			DBJ_INFO(":  __finally block visited");
-#endif // DBJ_FWK_DISPLAY_INFO
-
-		} // __finally
-	} // outer __try
-	__except (
-		GenerateDump(GetExceptionInformation())
-		/* returns 1 aka EXCEPTION_EXECUTE_HANDLER */
-		)
-	{
-		// MS STL "throws" are raised SE's under "no exceptions" builds
-		// they are best caught here and nowhere else in the app
-		DBJ_ERROR(": Structured Exception caught");
-
-		if (dump_last_run.finished_ok) {
-			DBJ_INFO(": Minidump creation succeeded");
-			DBJ_INFO(": Dump folder: %s", dump_last_run.dump_folder_name);
-			DBJ_INFO(": Dump file  : %s", dump_last_run.dump_file_name);
-		}
-		else {
-			DBJ_WARN("Minidump creation failed");
-		}
-	} // __except
-
-#ifdef DBJ_FWK_DISPLAY_INFO
-
 	DBJ_INFO(":");
 #ifdef _DEBUG
 	DBJ_INFO(": DEBUG build");
@@ -58,7 +21,7 @@ static int seh_main(int argc, char** argv)
 #endif // __clang__               
 
 #ifdef _MSC_FULL_VER 
-	DBJ_INFO(": %s: %d ", "_MSC_FULL_VER" , _MSC_FULL_VER);
+	DBJ_INFO(": %s: %d ", "_MSC_FULL_VER", _MSC_FULL_VER);
 #endif // _MSC_FULL_VER                
 
 #ifdef __cplusplus  
@@ -68,7 +31,7 @@ static int seh_main(int argc, char** argv)
 #endif // !__cplusplus  
 
 #ifdef __STDC_VERSION__ 
-	DBJ_INFO(": __STDC_VERSION__ : %d", __STDC_VERSION__ );
+	DBJ_INFO(": __STDC_VERSION__ : %d", __STDC_VERSION__);
 #else // ! __STDC_VERSION__ 
 	DBJ_INFO(": __STDC_VERSION__ is NOT defined");
 #endif // !__STDC_VERSION__ 
@@ -97,10 +60,47 @@ static int seh_main(int argc, char** argv)
 	DBJ_INFO(": _CPPUNWIND is not defined");
 #endif //! _CPPUNWIND 
 
+	DBJ_INFO(":");
 	DBJ_INFO(": " DBJ_APP_NAME " " DBJ_APP_VERSION);
+	DBJ_INFO(":");
 	DBJ_INFO(":...Leaving... ");
 	DBJ_INFO(":");
-#endif // DBJ_FWK_DISPLAY_INFO
+
+}
+/// --------------------------------------------------------------------------------
+/// in here we solve the SE catching (if SE raised) and minidump generation
+static int seh_main(int argc, char** argv)
+{
+	__try
+	{
+		__try {
+
+			dbj_main(argc, argv);
+
+		} // inner __try
+		__finally {
+			DBJ_DBG("%s",":  __finally block visited");
+				app_args_callback_(DBJ_CL_ARG_SHOW_BUILD_ENV, display_build_env );
+		} // __finally
+	} // outer __try
+	__except (
+		GenerateDump(GetExceptionInformation())
+		/* returns 1 aka EXCEPTION_EXECUTE_HANDLER */
+		)
+	{
+		// MS STL "throws" are raised SE's under "no exceptions" builds
+		// they are best caught here and nowhere else in the app
+		DBJ_ERROR(": Structured Exception caught");
+
+		if (dump_last_run.finished_ok) {
+			DBJ_INFO(": Minidump creation succeeded");
+			DBJ_INFO(": Dump folder: %s", dump_last_run.dump_folder_name);
+			DBJ_INFO(": Dump file  : %s", dump_last_run.dump_file_name);
+		}
+		else {
+			DBJ_WARN("Minidump creation failed");
+		}
+	} // __except
 
 	return EXIT_SUCCESS;
 
@@ -110,7 +110,8 @@ static int seh_main(int argc, char** argv)
 /*
 WCHAR policy : ignore it :)
 
-all the main version bellow caputre char ** argv
+all the main() versions bellow capture argv 
+as char **
 and send it into the FWK
 
 end user is providing implementation for:

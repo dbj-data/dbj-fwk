@@ -45,6 +45,6 @@
 // #define SX(F, ...) printf("\n%s[%4d] %12s : " F, __FILE__, __LINE__, #__VA_ARGS__, __VA_ARGS__)
 #else // ! _DEBUG
 // just execute the expression do not try to print it
-#define DBJ_DBG(F,X) (X)
+#define DBJ_DBG(F,X) ((void)X)
 // #define SX(F,...)
 #endif // ! _DEBUG
