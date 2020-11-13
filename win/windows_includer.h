@@ -37,7 +37,7 @@ for building we require WIN10 as minimum
 #include <windows.h>
 #include <processenv.h>
 
-#ifdef DBJ_MINIMAX
+#ifdef NOMINMAX
 #undef  min
 #define min(x, y) ((x) < (y) ? (x) : (y))
 

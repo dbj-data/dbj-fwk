@@ -1,15 +1,29 @@
-// #include "../ubench.h/ubench.h"
+
+/// the mandatory and only initialization of the dbj simplelog
+#include "../dbj--simplelog/dbj_simple_log_host.h"
+
+// change in the main() linker will use
+int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
+
+
+/// ------------------------------------------------------------------------
 #include "dbj_main.h"
 #include "win/win_cli_args.h"
-// above we do #include "win/windows_includer.h"
 
+static bool we_are_on_required_os(void) {
+	// if the Windows version is equal to or
+	// greater than 10.0.14393 then ENABLE_VIRTUAL_TERMINAL_PROCESSING is
+	// supported.
+	// That is: cmd is capable of handling VT100 colour codes
+	return is_win_ver_or_greater(10, 0, 14393);
+}
 
 // command line args understood by DBJ+FWK
-static void cli_usage (const char* /*cli_arg_*/) {
+static void cli_usage(const char* /*cli_arg_*/) {
 
-	DBJ_INFO(": " );
+	DBJ_INFO(": ");
 	DBJ_INFO(": " DBJ_APP_NAME " " DBJ_APP_VERSION);
-	DBJ_INFO(": " DBJ_APP_COPYRIGHT );
+	DBJ_INFO(": " DBJ_APP_COPYRIGHT);
 	DBJ_INFO(": ");
 	DBJ_INFO(": " DBJ_APP_NAME " only, Command LIne arguments ");
 	DBJ_INFO(": ");
@@ -94,16 +108,26 @@ static int seh_main(int argc, char** argv)
 	{
 		__try {
 
-			if (! app_args_callback_(DBJ_CL_ARG_HELP, cli_usage)) {
-                // no FWK cli help was requested
+			if (!we_are_on_required_os())
+			{
+				DBJ_ERROR("");
+				DBJ_ERROR("" DBJ_APP_NAME " -- ERROR " );
+				DBJ_ERROR("");
+				DBJ_ERROR("Minimum Windows version required is 10.0.14393");
+				DBJ_ERROR(" Exiting ...");
+				DBJ_ERROR("");
+			}
+			else
+			if (!app_args_callback_(DBJ_CL_ARG_HELP, cli_usage)) {
+				// no FWK cli help was requested
 				(void)app_args_callback_(DBJ_CL_ARG_LOG_TEST, dbj_simple_log_test);
 				dbj_main(argc, argv);
 			}
 
 		} // inner __try
 		__finally {
-			DBJ_DBG("%s",":  __finally block visited");
-				(void)app_args_callback_(DBJ_CL_ARG_SHOW_BUILD_ENV, display_build_env );
+			DBJ_DBG("%s", ":  __finally block visited");
+			(void)app_args_callback_(DBJ_CL_ARG_SHOW_BUILD_ENV, display_build_env);
 		} // __finally
 	} // outer __try
 	__except (
@@ -133,7 +157,7 @@ static int seh_main(int argc, char** argv)
 /*
 WCHAR policy : ignore it :)
 
-all the main() versions bellow capture argv 
+all the main() versions bellow capture argv
 as char **
 and send it into the FWK
 
@@ -147,15 +171,14 @@ as far as user is concetned, that is the entry point
 
 extern "C" int wmain(int argc, wchar_t** argv)
 {
-	// "switch on" VT100 for WIN10 cmd.exe
-	// an awfull hack
-#if defined(_WIN32_WINNT_WIN10) 
+	 dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
+
+// "switch on" VT100 for WIN10 cmd.exe
+// an awfull hack
 // and this is it ... really
 // ps: make sure it is not empty string!
 	system(" ");
-#else
- // no op
-#endif
+
 	dbj::win::cli_args args_;
 	return seh_main(args_.argc, args_.argv);
 }
@@ -166,13 +189,8 @@ extern "C" int main(int argc, char** argv)
 {
 	// "switch on" VT100 for WIN10 cmd.exe
 	// an awfull hack
-#if defined(_WIN32_WINNT_WIN10) 
-// and this is it ... really
-// ps: make sure it is not empty string!
 	system(" ");
-#else
- // no op
-#endif
+
 	return seh_main(argc, argv);
 }
 
@@ -188,6 +206,8 @@ extern "C" int WINAPI  wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
+	dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_SETUP);
+
 	dbj::win::cli_args args_;
 	return seh_main(args_.argc, args_.argv);
 }
@@ -200,6 +220,8 @@ extern "C" int WINAPI  WinMain(_In_ HINSTANCE hInstance,
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
+
+	dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_SETUP);
 
 	dbj::win::cli_args args_;
 	return seh_main(args_.argc, args_.argv);
