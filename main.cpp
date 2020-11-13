@@ -3,6 +3,25 @@
 #include "win/win_cli_args.h"
 // above we do #include "win/windows_includer.h"
 
+
+// command line args understood by DBJ+FWK
+static void cli_usage (const char* /*cli_arg_*/) {
+
+	DBJ_INFO(": " );
+	DBJ_INFO(": " DBJ_APP_NAME " " DBJ_APP_VERSION);
+	DBJ_INFO(": " DBJ_APP_COPYRIGHT );
+	DBJ_INFO(": ");
+	DBJ_INFO(": " DBJ_APP_NAME " only, Command LIne arguments ");
+	DBJ_INFO(": ");
+	DBJ_INFO(": " DBJ_CL_ARG_SHOW_BUILD_ENV " -- display the build environment key parameters");
+	DBJ_INFO(": " DBJ_CL_ARG_LOG_TEST " -- quick dbj--simpelog test");
+	DBJ_INFO(": " DBJ_CL_ARG_IGNORE_UBENCH " -- do not execute benchmarks");
+	DBJ_INFO(": " DBJ_CL_ARG_IGNORE_UTEST " -- do not execute tests");
+	DBJ_INFO(": " DBJ_CL_ARG_HELP " -- this short help");
+	DBJ_INFO(": ");
+
+}
+
 static void display_build_env(const char* /*cli_arg_*/)
 {
 	DBJ_INFO(":");
@@ -75,12 +94,16 @@ static int seh_main(int argc, char** argv)
 	{
 		__try {
 
-			dbj_main(argc, argv);
+			if (! app_args_callback_(DBJ_CL_ARG_HELP, cli_usage)) {
+                // no FWK cli help was requested
+				(void)app_args_callback_(DBJ_CL_ARG_LOG_TEST, dbj_simple_log_test);
+				dbj_main(argc, argv);
+			}
 
 		} // inner __try
 		__finally {
 			DBJ_DBG("%s",":  __finally block visited");
-				app_args_callback_(DBJ_CL_ARG_SHOW_BUILD_ENV, display_build_env );
+				(void)app_args_callback_(DBJ_CL_ARG_SHOW_BUILD_ENV, display_build_env );
 		} // __finally
 	} // outer __try
 	__except (

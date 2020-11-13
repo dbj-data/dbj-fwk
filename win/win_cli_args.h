@@ -136,7 +136,7 @@ extern "C" {
 #endif // __clang__
 
 	/*
-	if arg found callback on it, return true
+	if arg found if it is given call a callback on it, return true
 	otherwise return false
 	*/
 	inline bool app_args_callback_ ( const char arg_name[], void (*callb_)(const char*))
@@ -151,7 +151,7 @@ extern "C" {
 		{
 			if (0 == strncmp(app_cli_args.argv[index], arg_name, arg_name_len)) {
 
-				callb_(arg_name);
+				if (callb_) callb_(arg_name);
 				return true;
 			}
 		}
