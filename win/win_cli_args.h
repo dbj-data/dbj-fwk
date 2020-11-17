@@ -6,6 +6,10 @@
 #ifdef __cplusplus   
 extern "C" {
 #endif 
+
+#pragma warning( push )
+#pragma warning( disable : 26451 )
+#pragma warning( disable : 28182 )
 	/*
 	*  http://alter.org.ua/docs/win/args/
 	*
@@ -20,22 +24,22 @@ extern "C" {
 			int* _argc
 		)
 	{
-		PCHAR* argv;
-		PCHAR  _argv;
-		ULONG   len;
-		ULONG   argc;
-		CHAR   a;
-		ULONG   i, j;
+		PCHAR* argv			=	NULL;
+		PCHAR  _argv		=	NULL;
+		ULONG   len			=	0UL;
+		ULONG   argc		=	0UL;
+		CHAR   a			=	0;
+		ULONG   i = 0UL, j	=	0UL;
 
-		BOOLEAN  in_QM;
-		BOOLEAN  in_TEXT;
-		BOOLEAN  in_SPACE;
+		BOOLEAN  in_QM		=	FALSE ;
+		BOOLEAN  in_TEXT	=	FALSE ;
+		BOOLEAN  in_SPACE	=	FALSE ;
 
 		len = (ULONG)strlen(CmdLine);
-		i = ((len + 2) / 2) * sizeof(PVOID) + sizeof(PVOID);
+		i = ((len + 2UL) / 2) * sizeof(PVOID) + sizeof(PVOID);
 
 		argv = (PCHAR*)LocalAlloc(GMEM_FIXED,
-			i + (len + 2) * sizeof(CHAR));
+			i + (len + 2UL) * sizeof(CHAR));
 
 		_argv = (PCHAR)(((PUCHAR)argv) + i);
 
@@ -99,6 +103,7 @@ extern "C" {
 		(*_argc) = argc;
 		return argv;
 	}
+#pragma warning( pop )
 
 	//---------------------------------------------------------------------
 	//

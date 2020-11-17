@@ -101,7 +101,7 @@ static void display_build_env(const char* /*cli_arg_*/)
 
 }
 /// --------------------------------------------------------------------------------
-/// in here we solve the SE catching (if SE raised) and minidump generation
+/// in here we solve the SE catching (if SE is raised) and minidump generation
 static int seh_main(int argc, char** argv)
 {
 	__try
@@ -126,7 +126,7 @@ static int seh_main(int argc, char** argv)
 
 		} // inner __try
 		__finally {
-			DBJ_DBG("%s", ":  __finally block visited");
+            // if this cli arg is defined use that callback
 			(void)app_args_callback_(DBJ_CL_ARG_SHOW_BUILD_ENV, display_build_env);
 		} // __finally
 	} // outer __try
