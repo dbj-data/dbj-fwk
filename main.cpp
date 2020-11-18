@@ -111,22 +111,24 @@ static int seh_main(int argc, char** argv)
 			if (!we_are_on_required_os())
 			{
 				DBJ_ERROR("");
-				DBJ_ERROR("" DBJ_APP_NAME " -- ERROR " );
+				DBJ_ERROR("" DBJ_APP_NAME " -- ERROR ");
 				DBJ_ERROR("");
 				DBJ_ERROR("Minimum Windows version required is 10.0.14393");
 				DBJ_ERROR(" Exiting ...");
 				DBJ_ERROR("");
 			}
 			else
-			if (!app_args_callback_(DBJ_CL_ARG_HELP, cli_usage)) {
-				// no FWK cli help was requested
-				(void)app_args_callback_(DBJ_CL_ARG_LOG_TEST, dbj_simple_log_test);
-				dbj_main(argc, argv);
-			}
+				// FWK cli help was requested
+				if (!app_args_callback_(DBJ_CL_ARG_HELP, cli_usage)) {
+					// FWK log test was requested
+					if (!app_args_callback_(DBJ_CL_ARG_LOG_TEST, dbj_simple_log_test))
+						// no help, no test was requested
+						dbj_main(argc, argv);
+				}
 
 		} // inner __try
 		__finally {
-            // if this cli arg is defined use that callback
+			// if this cli arg is defined use that callback
 			(void)app_args_callback_(DBJ_CL_ARG_SHOW_BUILD_ENV, display_build_env);
 		} // __finally
 	} // outer __try
@@ -171,12 +173,12 @@ as far as user is concetned, that is the entry point
 
 extern "C" int wmain(int argc, wchar_t** argv)
 {
-	 dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
+	dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
 
-// "switch on" VT100 for WIN10 cmd.exe
-// an awfull hack
-// and this is it ... really
-// ps: make sure it is not empty string!
+	// "switch on" VT100 for WIN10 cmd.exe
+	// an awfull hack
+	// and this is it ... really
+	// ps: make sure it is not empty string!
 	system(" ");
 
 	dbj::win::cli_args args_;

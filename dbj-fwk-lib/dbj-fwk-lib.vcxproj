@@ -95,7 +95,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalOptions>/D_HAS_EXCEPTIONS=0  /DDBJ_FWK_DISPLAY_INFO /D_UNICODE /DDBJ_FWK_USES_SIMPLELOG</AdditionalOptions>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=1 </AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -121,7 +121,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalOptions>/D_HAS_EXCEPTIONS=0  /DDBJ_FWK_DISPLAY_INFO /D_UNICODE /DDBJ_FWK_USES_SIMPLELOG</AdditionalOptions>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=1 </AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -147,7 +147,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalOptions>/D_HAS_EXCEPTIONS=0  /DDBJ_FWK_DISPLAY_INFO /D_UNICODE /DDBJ_FWK_USES_SIMPLELOG</AdditionalOptions>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=1 </AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -173,7 +173,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalOptions>/D_HAS_EXCEPTIONS=0  /DDBJ_FWK_DISPLAY_INFO /D_UNICODE /DDBJ_FWK_USES_SIMPLELOG</AdditionalOptions>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=1 </AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
