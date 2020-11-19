@@ -21,4 +21,7 @@ CAUTION! DBJ_APP_NAME is used as folder name at one point
 #define DBJ_CL_ARG_IGNORE_UTEST  "--fwk-ignore-utest"
 #define DBJ_CL_ARG_HELP  "--fwk-help"
 
+// this means direct EASTL header(s) includes
+#define DBJ_FWK_EASTL_DIRECT_DEPENDANCY 1
+
 // EOF

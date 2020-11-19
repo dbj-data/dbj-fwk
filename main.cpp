@@ -36,32 +36,33 @@ static void cli_usage(const char* /*cli_arg_*/) {
 
 }
 
+// we need EASTL to be able to understand and show EASTL defines
+
+#ifdef DBJ_FWK_EASTL_DIRECT_DEPENDANCY
+extern "C" void show_eastl_compile_time_defines(void);
+#endif // DBJ_FWK_EASTL_DIRECT_DEPENDANCY
+
 static void display_build_env(const char* /*cli_arg_*/)
 {
 	DBJ_INFO(":");
+
+	osinfo_struct os_ = get_win_version();
+	DBJ_INFO(": %s: %ld.%ld.%ld [%ld]", "WINDOWS", os_.major, os_.minor, os_.build_num, os_.platform_id);
+
 #ifdef _DEBUG
 	DBJ_INFO(": DEBUG build");
 #else
 	DBJ_INFO(": RELEASE build");
 #endif
 	DBJ_INFO(":");
-
-	osinfo_struct os_ = get_win_version();
-	DBJ_INFO(": %s: %ld.%ld.%ld [%ld]", "WINDOWS", os_.major, os_.minor, os_.build_num, os_.platform_id);
-
 #ifdef __clang__
 	DBJ_INFO(": %s ", __VERSION__);
 #endif // __clang__               
 
-#ifdef _MSC_FULL_VER 
+	// _MSC_FULL_VER always exists
 	DBJ_INFO(": %s: %d ", "_MSC_FULL_VER", _MSC_FULL_VER);
-#endif // _MSC_FULL_VER                
 
-#ifdef __cplusplus  
-	DBJ_INFO(": __cplusplus  : %d", __cplusplus);
-#else // ! __cplusplus  
-	DBJ_INFO(": __cplusplus  is NOT defined");
-#endif // !__cplusplus  
+	DBJ_INFO(": __cplusplus  : %ld", __cplusplus);
 
 #ifdef __STDC_VERSION__ 
 	DBJ_INFO(": __STDC_VERSION__ : %d", __STDC_VERSION__);
@@ -69,29 +70,38 @@ static void display_build_env(const char* /*cli_arg_*/)
 	DBJ_INFO(": __STDC_VERSION__ is NOT defined");
 #endif // !__STDC_VERSION__ 
 
+	DBJ_INFO(":");
+
 #ifdef _KERNEL_MODE
 	DBJ_INFO(": _KERNEL_MODE is defined");
 #else // ! _KERNEL_MODE
 	DBJ_INFO(": _KERNEL_MODE is NOT defined");
 #endif // !_KERNEL_MODE
 
-#if (_HAS_EXCEPTIONS == 1)
-	DBJ_INFO(": _HAS_EXCEPTIONS == 1");
-#else
-	DBJ_INFO(": _HAS_EXCEPTIONS == 0");
-#endif // _HAS_EXCEPTIONS
+	// _HAS_EXCEPTIONS always exists and is 0 or 1
+	DBJ_INFO(": _HAS_EXCEPTIONS  == %d ", (_HAS_EXCEPTIONS == 1));
 
-#if (_CPPRTTI == 1)
-	DBJ_INFO(": _CPPRTTI == 1");
+	// _CPPRTTI doe not always exists and is 0 or 1
+#ifdef _CPPRTTI
+	DBJ_INFO(": _CPPRTTI  == %d ", (_CPPRTTI == 1));
 #else
-	DBJ_INFO(": _CPPRTTI == 0");
-#endif // ! _CPPRTTI
+	DBJ_INFO(": _CPPRTTI  is not defined ");
+#endif 
 
+	// _CPPUNWIND Defined as 1 if one or more of the / GX(Enable Exception Handling), 
+	//  clr(Common Language Runtime Compilation), or /EH(Exception Handling Model) 
+	//	compiler options are set.
+	//	Otherwise, undefined.
 #ifdef _CPPUNWIND
-	DBJ_INFO(": _CPPUNWIND is defined");
-#else // ! _CPPUNWIND 
-	DBJ_INFO(": _CPPUNWIND is not defined");
-#endif //! _CPPUNWIND 
+	DBJ_INFO(": _CPPUNWIND == %d", (_CPPUNWIND == 1));
+#else
+	DBJ_INFO(": _CPPUNWIND is undefined" );
+#endif
+
+	// EASTL specific
+#if DBJ_FWK_EASTL_DIRECT_DEPENDANCY
+	show_eastl_compile_time_defines();
+#endif
 
 	DBJ_INFO(":");
 	DBJ_INFO(": " DBJ_APP_NAME " " DBJ_APP_VERSION);
