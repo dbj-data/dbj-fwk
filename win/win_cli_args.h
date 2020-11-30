@@ -24,16 +24,16 @@ extern "C" {
 			int* _argc
 		)
 	{
-		PCHAR* argv			=	NULL;
-		PCHAR  _argv		=	NULL;
-		ULONG   len			=	0UL;
-		ULONG   argc		=	0UL;
-		CHAR   a			=	0;
-		ULONG   i = 0UL, j	=	0UL;
+		PCHAR* argv = NULL;
+		PCHAR  _argv = NULL;
+		ULONG   len = 0UL;
+		ULONG   argc = 0UL;
+		CHAR   a = 0;
+		ULONG   i = 0UL, j = 0UL;
 
-		BOOLEAN  in_QM		=	FALSE ;
-		BOOLEAN  in_TEXT	=	FALSE ;
-		BOOLEAN  in_SPACE	=	FALSE ;
+		BOOLEAN  in_QM = FALSE;
+		BOOLEAN  in_TEXT = FALSE;
+		BOOLEAN  in_SPACE = FALSE;
 
 		len = (ULONG)strlen(CmdLine);
 		i = ((len + 2UL) / 2) * sizeof(PVOID) + sizeof(PVOID);
@@ -140,14 +140,23 @@ extern "C" {
 
 #endif // __clang__
 
+	// arguments parsing/handling
+
+	// DBJ: so far some of this will NOT work if used from C code
+
+	enum class app_args_result { proceed, stop };
+
+	inline app_args_result app_args_stop( const char * ) {	return app_args_result::stop;	}
+	inline app_args_result app_args_proceed( const char * ) {	return app_args_result::proceed ; }
+
 	/*
-	if arg found if it is given call a callback on it, return true
-	otherwise return false
+	if arg not found return proceed
+	otherwise return callback result
 	*/
-	inline bool app_args_callback_ ( const char arg_name[], void (*callb_)(const char*))
+	inline app_args_result app_args_callback_(const char arg_name[], app_args_result(*callb_)(const char*))
 	{
 		// DBJ TODO: MT lock here
-		_ASSERTE( app_cli_args.argc > 0 );
+		_ASSERTE(app_cli_args.argc > 0);
 
 		size_t arg_name_len = strnlen_s(arg_name, 0xFF);
 		_ASSERTE(arg_name_len);
@@ -155,12 +164,12 @@ extern "C" {
 		for (int index = 0; index < app_cli_args.argc; ++index)
 		{
 			if (0 == strncmp(app_cli_args.argv[index], arg_name, arg_name_len)) {
-
-				if (callb_) callb_(arg_name);
-				return true;
+				// argument is found
+				_ASSERTE(callb_);
+				return callb_(arg_name);
 			}
 		}
-		return false;
+		return app_args_result::proceed;
 	}
 
 

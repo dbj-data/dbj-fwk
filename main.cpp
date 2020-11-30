@@ -10,16 +10,26 @@ int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
 #include "dbj_main.h"
 #include "win/win_cli_args.h"
 
-static bool we_are_on_required_os(void) {
+__declspec(noreturn) static void  os_check (void) {
 	// if the Windows version is equal to or
 	// greater than 10.0.14393 then ENABLE_VIRTUAL_TERMINAL_PROCESSING is
 	// supported.
 	// That is: cmd is capable of handling VT100 colour codes
-	return is_win_ver_or_greater(10, 0, 14393);
+	if (false == is_win_ver_or_greater(10, 0, 14393))
+	{
+		DBJ_ERROR("");
+		DBJ_ERROR("" DBJ_APP_NAME " -- ERROR ");
+		DBJ_ERROR("");
+		DBJ_ERROR("Minimum Windows version required is 10.0.14393");
+		DBJ_ERROR(" Exiting ...");
+		DBJ_ERROR("");
+		DBJ_PERROR;
+		exit(EXIT_FAILURE);
+	}
 }
 
 // command line args understood by DBJ+FWK
-static void cli_usage(const char* /*cli_arg_*/) {
+static app_args_result cli_usage(const char* /*cli_arg_*/) {
 
 	DBJ_INFO(": ");
 	DBJ_INFO(": " DBJ_APP_NAME " " DBJ_APP_VERSION);
@@ -34,15 +44,17 @@ static void cli_usage(const char* /*cli_arg_*/) {
 	DBJ_INFO(": " DBJ_CL_ARG_HELP " -- this short help");
 	DBJ_INFO(": ");
 
+	//  display the help and stop
+	return app_args_result::stop;
 }
 
 // we need EASTL to be able to understand and show EASTL defines
 
 #ifdef DBJ_FWK_EASTL_DIRECT_DEPENDANCY
-extern "C" void show_eastl_compile_time_defines(void);
+extern "C" app_args_result show_eastl_compile_time_defines(void);
 #endif // DBJ_FWK_EASTL_DIRECT_DEPENDANCY
 
-static void display_build_env(const char* /*cli_arg_*/)
+extern "C" static app_args_result display_build_env(const char* /*cli_arg_*/)
 {
 	DBJ_INFO(":");
 
@@ -109,6 +121,14 @@ static void display_build_env(const char* /*cli_arg_*/)
 	DBJ_INFO(":...Leaving... ");
 	DBJ_INFO(":");
 
+	return app_args_result::stop;
+
+}
+/// --------------------------------------------------------------------------------
+extern "C" static app_args_result call_simple_log_test( const char* )
+{
+	dbj_simple_log_test("");
+	return app_args_result::stop;
 }
 /// --------------------------------------------------------------------------------
 /// in here we solve the SE catching (if SE is raised) and minidump generation
@@ -116,31 +136,20 @@ static int seh_main(int argc, char** argv)
 {
 	__try
 	{
-		__try {
+		// __try {
 
-			if (!we_are_on_required_os())
-			{
-				DBJ_ERROR("");
-				DBJ_ERROR("" DBJ_APP_NAME " -- ERROR ");
-				DBJ_ERROR("");
-				DBJ_ERROR("Minimum Windows version required is 10.0.14393");
-				DBJ_ERROR(" Exiting ...");
-				DBJ_ERROR("");
-			}
-			else
-				// FWK cli help was requested
-				if (!app_args_callback_(DBJ_CL_ARG_HELP, cli_usage)) {
-					// FWK log test was requested
-					if (!app_args_callback_(DBJ_CL_ARG_LOG_TEST, dbj_simple_log_test))
-						// no help, no test was requested
-						dbj_main(argc, argv);
-				}
-
-		} // inner __try
-		__finally {
+			//  exit if bellow WIN 10.0.14393 
+			os_check();
+			// FWK cli help was requested
+			if (app_args_result::stop == app_args_callback_(DBJ_CL_ARG_HELP, cli_usage)) __leave ;
+			// FWK log test was requested
+			if (app_args_result::stop == app_args_callback_(DBJ_CL_ARG_LOG_TEST, call_simple_log_test)) __leave ;
 			// if this cli arg is defined use that callback
-			(void)app_args_callback_(DBJ_CL_ARG_SHOW_BUILD_ENV, display_build_env);
-		} // __finally
+			if (app_args_result::stop == app_args_callback_(DBJ_CL_ARG_SHOW_BUILD_ENV, display_build_env)) __leave ;
+
+			dbj_main(argc, argv);
+
+		// } __finally {	} // dbj: too fiddly when __leave is used: inner __try + __finally
 	} // outer __try
 	__except (
 		GenerateDump(GetExceptionInformation())

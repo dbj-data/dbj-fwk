@@ -64,7 +64,7 @@ extern "C" {
 #ifndef NDEBUG
 #define DBJ_PERROR (perror(__FILE__ " # " _CRT_STRINGIZE(__LINE__))) 
 #else
-#define DBJ_PERROR
+#define DBJ_PERROR (perror(" "))
 #endif // NDEBUG
 
 #undef DBJ_FERROR

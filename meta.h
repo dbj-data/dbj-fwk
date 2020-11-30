@@ -6,8 +6,11 @@ CAUTION! DBJ_APP_NAME is used as folder name at one point
 , do not use chars that must not be used in file/folder names
 
 */
-#define DBJ_APP_NAME "DBJ+FWK"
-#define DBJ_APP_VERSION "1.0.0"
+#define DBJ_APP_NAME "DBJ+BENCH"
+#define DBJ_APP_MAJOR 2
+#define DBJ_APP_MINOR 0
+#define DBJ_APP_PATCH 0
+#define DBJ_APP_VERSION "2.0.0"
 #define DBJ_APP_OWNER "dbj@dbj.org"
 #define DBJ_APP_LICENSE "LICENSE_DBJ"
 #define DBJ_APP_COPYRIGHT "(c) 2020 by dbj@dbj.org"
