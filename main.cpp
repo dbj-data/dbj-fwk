@@ -10,7 +10,7 @@ int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
 #include "dbj_main.h"
 #include "win/win_cli_args.h"
 
-__declspec(noreturn) static void  os_check (void) {
+static void  os_check (void) {
 	// if the Windows version is equal to or
 	// greater than 10.0.14393 then ENABLE_VIRTUAL_TERMINAL_PROCESSING is
 	// supported.
@@ -54,7 +54,7 @@ static app_args_result cli_usage(const char* /*cli_arg_*/) {
 extern "C" app_args_result show_eastl_compile_time_defines(void);
 #endif // DBJ_FWK_EASTL_DIRECT_DEPENDANCY
 
-extern "C" static app_args_result display_build_env(const char* /*cli_arg_*/)
+static app_args_result display_build_env(const char* /*cli_arg_*/)
 {
 	DBJ_INFO(":");
 
@@ -125,7 +125,7 @@ extern "C" static app_args_result display_build_env(const char* /*cli_arg_*/)
 
 }
 /// --------------------------------------------------------------------------------
-extern "C" static app_args_result call_simple_log_test( const char* )
+static app_args_result call_simple_log_test( const char* )
 {
 	dbj_simple_log_test("");
 	return app_args_result::stop;

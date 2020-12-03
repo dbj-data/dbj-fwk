@@ -3,13 +3,15 @@
 #include "windows_includer.h"
 #include "dbj_start_stop.h"
 
+#pragma warning( push )
+#pragma warning( disable : 26451 )
+#pragma warning( disable : 28182 )
+
 #ifdef __cplusplus   
 extern "C" {
 #endif 
 
-#pragma warning( push )
-#pragma warning( disable : 26451 )
-#pragma warning( disable : 28182 )
+
 	/*
 	*  http://alter.org.ua/docs/win/args/
 	*
