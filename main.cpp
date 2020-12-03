@@ -187,7 +187,7 @@ extern "C" int program (int argc, char ** argv) ;
 as far as user is concetned, that is the entry point
 */
 
-#ifdef _UNICODE
+#if defined( __clang__ ) && (defined( UNICODE ) || defined( _UNICODE ))
 
 extern "C" int wmain(int argc, wchar_t** argv)
 {
@@ -203,7 +203,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
 	return seh_main(args_.argc, args_.argv);
 }
 
-#else // ! _UNICODE
+#else // ! clang and _UNICODE
 
 extern "C" int main(int argc, char** argv)
 {
@@ -214,7 +214,7 @@ extern "C" int main(int argc, char** argv)
 	return seh_main(argc, argv);
 }
 
-#endif // ! _UNICODE
+#endif // ! clang and _UNICODE
 
 /// --------------------------------------------------------------------------------
 #ifdef _UNICODE
