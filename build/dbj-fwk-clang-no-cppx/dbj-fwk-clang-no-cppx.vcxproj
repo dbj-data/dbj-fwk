@@ -86,9 +86,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)bin</OutDir>
+    <TargetName>$(ProjectName)_$(Configuration)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin</OutDir>
+    <TargetName>$(ProjectName)_$(Configuration)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -153,11 +157,12 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
-      <AdditionalOptions>/permissive- /nologo /Zc:wchar_t  /DUNICODE /D_UNICODE /DWINVER=0x0A00 /GR- /D_WIN32_WINNT=0x0A00  /D_HAS_EXCEPTIONS=0  /DDEBUG /D_DEBUG</AdditionalOptions>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <ExceptionHandling>false</ExceptionHandling>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -180,11 +185,12 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
-      <AdditionalOptions>/permissive- /nologo /Zc:wchar_t  /DUNICODE /D_UNICODE /DWINVER=0x0A00 /GR- /D_WIN32_WINNT=0x0A00  /D_HAS_EXCEPTIONS=0 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <ExceptionHandling>false</ExceptionHandling>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>

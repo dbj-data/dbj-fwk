@@ -17,14 +17,13 @@ static void  os_check (void) {
 	// That is: cmd is capable of handling VT100 colour codes
 	if (false == is_win_ver_or_greater(10, 0, 14393))
 	{
-		DBJ_ERROR("");
-		DBJ_ERROR("" DBJ_APP_NAME " -- ERROR ");
-		DBJ_ERROR("");
-		DBJ_ERROR("Minimum Windows version required is 10.0.14393");
-		DBJ_ERROR(" Exiting ...");
-		DBJ_ERROR("");
-		DBJ_PERROR;
-		exit(EXIT_FAILURE);
+		puts("");
+		puts("" DBJ_APP_NAME " -- ERROR ");
+		puts("");
+		puts("Minimum Windows version required is 10.0.14393");
+		perror(" Exiting ...");
+
+		__fastfail( FAST_FAIL_FATAL_APP_EXIT );
 	}
 }
 
@@ -188,7 +187,7 @@ extern "C" int program (int argc, char ** argv) ;
 as far as user is concetned, that is the entry point
 */
 
-// #ifdef _UNICODE
+#ifdef _UNICODE
 
 extern "C" int wmain(int argc, wchar_t** argv)
 {
@@ -204,7 +203,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
 	return seh_main(args_.argc, args_.argv);
 }
 
-//#else // ! _UNICODE
+#else // ! _UNICODE
 
 extern "C" int main(int argc, char** argv)
 {
@@ -215,7 +214,7 @@ extern "C" int main(int argc, char** argv)
 	return seh_main(argc, argv);
 }
 
-// #endif // ! _UNICODE
+#endif // ! _UNICODE
 
 /// --------------------------------------------------------------------------------
 #ifdef _UNICODE
