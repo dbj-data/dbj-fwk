@@ -1,6 +1,6 @@
 
 /// the mandatory and only initialization of the dbj simplelog
-#include "../dbj--simplelog/dbj_simple_log_host.h"
+#include <simplelog/dbj_simple_log_host.h>
 
 // change in the main() linker will use
 int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
