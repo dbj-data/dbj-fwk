@@ -34,7 +34,8 @@ static app_args_result cli_usage(const char* /*cli_arg_*/) {
 	DBJ_INFO(": " DBJ_APP_NAME " " DBJ_APP_VERSION);
 	DBJ_INFO(": " DBJ_APP_COPYRIGHT);
 	DBJ_INFO(": ");
-	DBJ_INFO(": " DBJ_APP_NAME " only, Command LIne arguments ");
+	DBJ_INFO(": " DBJ_APP_NAME ", Host Command LIne arguments ");
+	DBJ_INFO(": If these are given, they are processed and " DBJ_APP_NAME " exits");
 	DBJ_INFO(": ");
 	DBJ_INFO(": " DBJ_CL_ARG_SHOW_BUILD_ENV " -- display the build environment key parameters");
 	DBJ_INFO(": " DBJ_CL_ARG_LOG_TEST " -- quick dbj--simpelog test");

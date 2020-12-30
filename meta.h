@@ -18,11 +18,12 @@ CAUTION! DBJ_APP_NAME is used as folder name at one point
 #pragma comment( user, DBJ_APP_COPYRIGHT ", " DBJ_APP_NAME "[" DBJ_APP_VERSION "] compiled by " DBJ_APP_OWNER  " on " __DATE__ " at " __TIME__ )
 
 // command line args understood by DBJ+FWK
-#define DBJ_CL_ARG_SHOW_BUILD_ENV  "--fwk-buildenv"
-#define DBJ_CL_ARG_LOG_TEST  "--fwk-logtest"
-#define DBJ_CL_ARG_IGNORE_UBENCH  "--fwk-ignore-ubench"
-#define DBJ_CL_ARG_IGNORE_UTEST  "--fwk-ignore-utest"
-#define DBJ_CL_ARG_HELP  "--fwk-help"
+// '+' is used to differentiate from "normal" switches
+#define DBJ_CL_ARG_SHOW_BUILD_ENV  "+build"
+#define DBJ_CL_ARG_LOG_TEST  "+logtest"
+#define DBJ_CL_ARG_IGNORE_UBENCH  "+ignore-ubench"
+#define DBJ_CL_ARG_IGNORE_UTEST  "+ignore-utest"
+#define DBJ_CL_ARG_HELP  "+help"
 
 // this means direct EASTL header(s) includes
 #define DBJ_FWK_EASTL_DIRECT_DEPENDANCY 1

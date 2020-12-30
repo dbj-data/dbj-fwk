@@ -116,35 +116,31 @@ extern "C" {
 
 	static __declspec(thread) struct app_args_ app_cli_args = { 0,0 };
 
-#ifdef __clang__
-
-	__attribute__((constructor))
-		static inline void harvest_app_args_(void)
-	{
-		if (app_cli_args.argc < 1) {
-			app_cli_args.argv =
-				CommandLineToArgvA(
-					GetCommandLineA(), &app_cli_args.argc
-				);
+		inline void * harvest_app_args_(void *)
+		{
+			if (app_cli_args.argc < 1) {
+				app_cli_args.argv =
+					CommandLineToArgvA(
+						GetCommandLineA(), &app_cli_args.argc
+					);
+			}
+			return 0;
 		}
-	}
 
-	// CAUTION: it seems clang-cl can do this on Windows
-	// only if linking with static runtime lib
-	__attribute__((destructor))
-		static inline void free_app_args_(void)
-	{
-		if (app_cli_args.argc > 0) {
-			LocalFree(app_cli_args.argv);
-			app_cli_args.argc = 0;
+		inline void * free_app_args_(void *)
+		{
+			if (app_cli_args.argc > 0) {
+				LocalFree(app_cli_args.argv);
+				app_cli_args.argc = 0;
+			}
+			return 0;
 		}
-	}
 
-#endif // __clang__
+		namespace {
+			inline dbj::start_stop< harvest_app_args_, free_app_args_> cli_args_guardian_;
+		}
 
-	// arguments parsing/handling
-
-	// DBJ: so far some of this will NOT work if used from C code
+	// arguments parsing/handling signals
 
 	enum class app_args_result { proceed, stop };
 
@@ -154,16 +150,26 @@ extern "C" {
 	/*
 	if arg not found return proceed
 	otherwise return callback result
+
+	note: this model does check only for arguments , not for arguments and their values
+
+	"+help" will match
+	"+help=whatever" will NOT match
+
 	*/
 	inline app_args_result app_args_callback_(const char arg_name[], app_args_result(*callb_)(const char*))
 	{
 		// DBJ TODO: MT lock here
-		_ASSERTE(app_cli_args.argc > 0);
+		// must have more than 0 user given args
+		_ASSERTE(app_cli_args.argc > 1); 
+		if (app_cli_args.argc < 2)
+			return app_args_result::proceed;
 
 		size_t arg_name_len = strnlen_s(arg_name, 0xFF);
 		_ASSERTE(arg_name_len);
 
-		for (int index = 0; index < app_cli_args.argc; ++index)
+		// start from 1
+		for (int index = 1; index < app_cli_args.argc; ++index)
 		{
 			if (0 == strncmp(app_cli_args.argv[index], arg_name, arg_name_len)) {
 				// argument is found
