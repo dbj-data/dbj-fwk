@@ -116,36 +116,36 @@ extern "C" {
 
 	static __declspec(thread) struct app_args_ app_cli_args = { 0,0 };
 
-		inline void * harvest_app_args_(void *)
-		{
-			if (app_cli_args.argc < 1) {
-				app_cli_args.argv =
-					CommandLineToArgvA(
-						GetCommandLineA(), &app_cli_args.argc
-					);
-			}
-			return 0;
+	inline void* harvest_app_args_(void*)
+	{
+		if (app_cli_args.argc < 1) {
+			app_cli_args.argv =
+				CommandLineToArgvA(
+					GetCommandLineA(), &app_cli_args.argc
+				);
 		}
+		return 0;
+	}
 
-		inline void * free_app_args_(void *)
-		{
-			if (app_cli_args.argc > 0) {
-				LocalFree(app_cli_args.argv);
-				app_cli_args.argc = 0;
-			}
-			return 0;
+	inline void* free_app_args_(void*)
+	{
+		if (app_cli_args.argc > 0) {
+			LocalFree(app_cli_args.argv);
+			app_cli_args.argc = 0;
 		}
+		return 0;
+	}
 
-		namespace {
-			inline dbj::start_stop< harvest_app_args_, free_app_args_> cli_args_guardian_;
-		}
+	namespace {
+		inline dbj::start_stop< harvest_app_args_, free_app_args_> cli_args_guardian_;
+	}
 
 	// arguments parsing/handling signals
 
 	enum class app_args_result { proceed, stop };
 
-	inline app_args_result app_args_stop( const char * ) {	return app_args_result::stop;	}
-	inline app_args_result app_args_proceed( const char * ) {	return app_args_result::proceed ; }
+	inline app_args_result app_args_stop(const char*) { return app_args_result::stop; }
+	inline app_args_result app_args_proceed(const char*) { return app_args_result::proceed; }
 
 	/*
 	if arg not found return proceed
@@ -159,9 +159,9 @@ extern "C" {
 	*/
 	inline app_args_result app_args_callback_(const char arg_name[], app_args_result(*callb_)(const char*))
 	{
-		// DBJ TODO: MT lock here
-		// must have more than 0 user given args
-		_ASSERTE(app_cli_args.argc > 1); 
+		// DBJ TODO: conditional MT lock here
+		// must have more than 0 args
+		_ASSERTE(app_cli_args.argc > 0);
 		if (app_cli_args.argc < 2)
 			return app_args_result::proceed;
 
