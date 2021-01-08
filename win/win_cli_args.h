@@ -107,6 +107,12 @@ extern "C" {
 	}
 #pragma warning( pop )
 
+#ifdef __cplusplus   
+} // "C"
+#endif // __cplusplus  
+
+namespace dbj {
+
 	//---------------------------------------------------------------------
 	//
 	struct app_args_ final {
@@ -124,6 +130,9 @@ extern "C" {
 					GetCommandLineA(), &app_cli_args.argc
 				);
 		}
+
+		_ASSERTE(app_cli_args.argc > 0);
+
 		return 0;
 	}
 
@@ -161,32 +170,25 @@ extern "C" {
 	{
 		// DBJ TODO: conditional MT lock here
 		// must have more than 0 args
-		_ASSERTE(app_cli_args.argc > 0);
+		DBJ_VERIFY(app_cli_args.argc > 0);
 		if (app_cli_args.argc < 2)
 			return app_args_result::proceed;
 
 		size_t arg_name_len = strnlen_s(arg_name, 0xFF);
-		_ASSERTE(arg_name_len);
+		DBJ_VERIFY(arg_name_len);
 
 		// start from 1
 		for (int index = 1; index < app_cli_args.argc; ++index)
 		{
 			if (0 == strncmp(app_cli_args.argv[index], arg_name, arg_name_len)) {
 				// argument is found
-				_ASSERTE(callb_);
+				DBJ_VERIFY((void*)callb_);
 				return callb_(arg_name);
 			}
 		}
 		return app_args_result::proceed;
 	}
-
-
-#ifdef __cplusplus   
-} // "C"
-#endif // __cplusplus   
-
-#ifdef __cplusplus 
-namespace dbj {
+#if 0
 	namespace win {
 
 		//---------------------------------------------------------------------
@@ -202,7 +204,6 @@ namespace dbj {
 					argc = 0;
 					argv = nullptr;
 					if (app_cli_args.argc < 1) {
-						// populate the C struct above 
 						app_cli_args.argc = 0;
 						app_cli_args.argv = nullptr;
 					}
@@ -235,5 +236,6 @@ namespace dbj {
 		inline cli_args command_line_{};
 	}
 } // dbj::win
+#endif // 0
 
-#endif // __cplusplus 
+} // dbj

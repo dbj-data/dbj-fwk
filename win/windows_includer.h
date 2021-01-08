@@ -67,7 +67,7 @@ static inline const wchar_t* const this_app_full_path_w()
 	return full_path;
 }
 
-static inline const char * const this_app_full_path_a()
+static inline const char* const this_app_full_path_a()
 {
 	static char full_path[1024] = { '\0' };
 	if (full_path[0] == '\0') {
@@ -79,7 +79,7 @@ static inline const char * const this_app_full_path_a()
 	return full_path;
 }
 
-	// with no extension
+// with no extension
 static inline const wchar_t* this_base_namew()
 {
 	static wchar_t this_base_name[0xFF] = { L'\0' };
@@ -380,5 +380,19 @@ then ENABLE_VIRTUAL_TERMINAL_PROCESSING is supported.
 #ifdef __cplusplus
 } // extern "C" {
 #endif
+
+// based on nicked from crtdbg.h
+#ifndef _INC_CRTDBG
+#include <crtdbg.h>
+#endif
+
+#undef DBJ_VERIFY
+#define DBJ_VERIFY(expr) \
+do { \
+	if ( false == !! ((expr)) ){ \
+	perror( "\n" __FILE__ "(" _CRT_STRINGIZE(__LINE__)  ")\nExpression: " #expr "\nSystem error: ") ; \
+	exit(0);   } \
+} while(0)
+
 
 #endif // DBJ_WIN_LIB_INC_
