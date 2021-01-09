@@ -5,9 +5,6 @@
 // change in the main() linker will use
 int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
 
-inline auto
-
-
 /// ------------------------------------------------------------------------
 #include "dbj_main.h"
 #include "win/win_cli_args.h"

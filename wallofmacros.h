@@ -22,10 +22,6 @@
 
 #include "printing_macros.h"
 
-// -------------------------------------------------------------------------------
-#ifdef __cplusplus
-extern "C" {
-#endif
 /*-------------------------------------------------------------------------------*/
 
 #if defined(__clang__) 
@@ -113,7 +109,7 @@ if (ferror(FP_) != 0) {\
 #ifdef _DEBUG
 #define DBJ_ASSERT _ASSERTE
 #else
-	#define	DBJ_ASSERT(X_) ((void)(X_))
+#define	DBJ_ASSERT(X_) ((void)(X_))
 #endif
 
 //
@@ -141,12 +137,16 @@ timestamp included
 #undef  DBJ_ERR_PROMPT
 #define DBJ_ERR_PROMPT(MSG_) DBJ_FILE_LINE_TSTAMP MSG_
 
-// -----------------------------------------------------------------------------
-/*
-dbj_nanoc_terror == terminating error
-NOTE: std::exit *is* different to C API exit()
-NOTE: all the bets are of so no point of using some logging
-*/
+// -------------------------------------------------------------------------------
+#ifdef __cplusplus
+extern "C" {
+#endif
+	// -----------------------------------------------------------------------------
+	/*
+	dbj_terror == terminating error
+	NOTE: std::exit *is* different to C API exit()
+	NOTE: all the bets are of so no point of using some logging
+	*/
 	inline void dbj_terror(const char* msg_, const char* file_, const int line_)
 	{
 		/// DBJ_ASSERT(msg_ && file_ && line_);

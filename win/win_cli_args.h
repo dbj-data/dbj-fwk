@@ -111,16 +111,19 @@ extern "C" {
 } // "C"
 #endif // __cplusplus  
 
+#ifdef __cplusplus  
 namespace dbj {
 
 	//---------------------------------------------------------------------
-	//
-	struct app_args_ final {
-		int argc;
-		char** argv;
-	};
+	namespace detail {
+		struct app_args_ final {
+			int argc;
+			char** argv;
+		};
+	}
 
-	static __declspec(thread) struct app_args_ app_cli_args = { 0,0 };
+	inline detail::app_args_ app_cli_args = { 0,0 };
+
 
 	inline void* harvest_app_args_(void*)
 	{
@@ -239,3 +242,4 @@ namespace dbj {
 #endif // 0
 
 } // dbj
+#endif // __cplusplus  
