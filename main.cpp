@@ -11,9 +11,8 @@ int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
 
 namespace dbj {
 
-	__declspec(noreturn)
-		extern "C"
-		static void  os_check(void) {
+	extern "C"
+		inline void  os_check(void) {
 		// if the Windows version is equal to or
 		// greater than 10.0.14393 then ENABLE_VIRTUAL_TERMINAL_PROCESSING is
 		// supported.
@@ -32,7 +31,7 @@ namespace dbj {
 
 	// command line args understood by DBJ+FWK
 	extern "C"
-		static app_args_result cli_usage(const char* /*cli_arg_*/ = nullptr) noexcept {
+		inline app_args_result cli_usage(const char* /*cli_arg_*/ = nullptr) noexcept {
 
 		DBJ_INFO(": ");
 		DBJ_INFO(": " DBJ_APP_NAME " " DBJ_APP_VERSION);
@@ -130,7 +129,7 @@ namespace dbj {
 	}
 	/// --------------------------------------------------------------------------------
 	extern "C"
-		static app_args_result call_simple_log_test(const char*)
+		inline app_args_result call_simple_log_test(const char*)
 	{
 		dbj_simple_log_test("");
 		return app_args_result::stop;
@@ -138,7 +137,7 @@ namespace dbj {
 	/// --------------------------------------------------------------------------------
 	/// in here we solve the SE catching (if SE is raised) and minidump generation
 	extern "C"
-		static int seh_main(int argc, char** argv)
+		inline int seh_main(int argc, char** argv)
 	{
 		// technicaly argc,argv are not necessary as 
 		// dbj::app_cli_args are already made at this point
@@ -215,7 +214,7 @@ extern "C" int wmain(int argc, wchar_t** argv)
 	system(" ");
 
 	// made before main
-	DBJ_VERIFY(dbj::app_cli_args.argc > 0, "dbj::app_args_ not made on time?");
+	DBJ_VERIFY(dbj::app_cli_args.argc > 0);
 	return dbj::seh_main(dbj::app_cli_args.argc, dbj::app_cli_args.argv);
 
 }

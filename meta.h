@@ -21,8 +21,8 @@ CAUTION! DBJ_APP_NAME is used as folder name at one point
 // '+' is used to differentiate from "normal" switches
 #define DBJ_CL_ARG_SHOW_BUILD_ENV  "+build"
 #define DBJ_CL_ARG_LOG_TEST  "+logtest"
-#define DBJ_CL_ARG_IGNORE_UBENCH  "+ignore-ubench"
-#define DBJ_CL_ARG_IGNORE_UTEST  "+ignore-utest"
+#define DBJ_CL_ARG_IGNORE_UBENCH  "+nobench"
+#define DBJ_CL_ARG_IGNORE_UTEST  "+notest"
 #define DBJ_CL_ARG_HELP  "+help"
 
 // this means direct EASTL header(s) includes
