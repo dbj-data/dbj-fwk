@@ -381,5 +381,4 @@ then ENABLE_VIRTUAL_TERMINAL_PROCESSING is supported.
 } // extern "C" {
 #endif
 
-
 #endif // DBJ_WIN_LIB_INC_
