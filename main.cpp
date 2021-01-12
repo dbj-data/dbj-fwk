@@ -1,7 +1,9 @@
 /* (c) 2019-2021 by dbj.org   -- https://dbj.org/license_dbj/ */
 
 /// the mandatory and only initialization of the dbj simplelog
-#include <simplelog/dbj_simple_log_host.h>
+#define DBJ_FWK_USES_SIMPLELOG
+// #include <simplelog/dbj_simple_log_host.h>
+#include "printing_macros.h"
 
 // dbj_simple_log requires this in one place
 static int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
@@ -162,11 +164,11 @@ namespace dbj {
 
 			dbj_fwk_main(argc, argv);
 
-	DBJ_INFO(" ");
-	DBJ_INFO("================================================================");
-	DBJ_INFO("%s %s DONE", DBJ_APP_NAME, DBJ_APP_VERSION);
-	DBJ_INFO("================================================================");
-	DBJ_INFO(" ");
+			DBJ_INFO(" ");
+			DBJ_INFO("================================================================");
+			DBJ_INFO("%s %s DONE", DBJ_APP_NAME, DBJ_APP_VERSION);
+			DBJ_INFO("================================================================");
+			DBJ_INFO(" ");
 
 			// } __finally {	} // dbj: too fiddly when __leave is used: inner __try + __finally
 		} // outer __try

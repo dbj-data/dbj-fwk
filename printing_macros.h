@@ -4,7 +4,7 @@
 // NOTE: host app includes dbj_simple_log_host.h
 
 #define DBJ_SIMPLELOG_USER_DEFINED_MACRO_NAMES
-#include "../dbj--simplelog/dbj_simple_log.h"
+#include <simplelog/dbj_simple_log_host.h>
 
 #define DBJ_TRACE(...) dbj_log_trace(__VA_ARGS__)
 #define DBJ_DEBUG(...) dbj_log_debug(__VA_ARGS__)
