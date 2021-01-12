@@ -1,13 +1,14 @@
+/* (c) 2019-2021 by dbj.org   -- https://dbj.org/license_dbj/ */
 
 /// the mandatory and only initialization of the dbj simplelog
 #include <simplelog/dbj_simple_log_host.h>
 
-// change in the main() linker will use
-int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
+// dbj_simple_log requires this in one place
+static int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
 
-/// ------------------------------------------------------------------------
-#include "dbj_main.h"
 #include "win/win_cli_args.h"
+#include "dbj_main.h"
+#include "generate_dump.h"
 
 namespace dbj {
 
@@ -159,7 +160,13 @@ namespace dbj {
 			// if this cli arg is defined use that callback
 			if (app_args_result::stop == app_args_callback_(DBJ_CL_ARG_SHOW_BUILD_ENV, display_build_env)) __leave;
 
-			dbj_main(argc, argv);
+			dbj_fwk_main(argc, argv);
+
+	DBJ_INFO(" ");
+	DBJ_INFO("================================================================");
+	DBJ_INFO("%s %s DONE", DBJ_APP_NAME, DBJ_APP_VERSION);
+	DBJ_INFO("================================================================");
+	DBJ_INFO(" ");
 
 			// } __finally {	} // dbj: too fiddly when __leave is used: inner __try + __finally
 		} // outer __try

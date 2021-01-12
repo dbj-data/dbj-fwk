@@ -43,7 +43,7 @@ for building we require WIN10 as minimum
 
 #undef  max
 #define max(x, y) ((x) > (y) ? (x) : (y))
-#endif // DBJ_MINIMAX
+#endif // NOMINIMAX
 
 // https://devblogs.microsoft.com/oldnewthing/20041025-00/?p=37483
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;

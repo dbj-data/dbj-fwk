@@ -1,9 +1,7 @@
 #pragma once
 #ifndef DBJ_NANOC_INCLUDED
 #define DBJ_NANOC_INCLUDED
-/*
-   (c) 2019-2020 by dbj.org   -- LICENSE DBJ -- https://dbj.org/license_dbj/
-*/
+/* (c) 2019-2021 by dbj.org   -- https://dbj.org/license_dbj/ */
 #ifdef __clang__
 #pragma clang system_header
 #endif
