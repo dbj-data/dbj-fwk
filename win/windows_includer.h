@@ -54,7 +54,8 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 NOTE: the following is deliberately decoupled,
 from what is in win_cli_args.h
 */
-static inline const wchar_t* const this_app_full_path_w()
+DBJ_UNUSED_F
+static inline const wchar_t* this_app_full_path_w()
 {
 	static wchar_t full_path[1024] = { L'\0' };
 	if (full_path[0] == L'\0') {
@@ -67,7 +68,8 @@ static inline const wchar_t* const this_app_full_path_w()
 	return full_path;
 }
 
-static inline const char* const this_app_full_path_a()
+DBJ_UNUSED_F
+static inline const char* this_app_full_path_a()
 {
 	static char full_path[1024] = { '\0' };
 	if (full_path[0] == '\0') {
@@ -208,6 +210,8 @@ extern "C" {
 		char csd_version[128]; // Maintenance string for PSS usage
 	} osinfo, * osinfo_ptr;
 
+#define DBJ_OSINFO_EMPTY {0,0,0,0,0,{0}}
+
 	// actually the sure-fire way to obtain windows version
 	inline osinfo get_win_version(void)
 	{
@@ -222,18 +226,18 @@ extern "C" {
 			_ASSERTE(fxPtr != nullptr);
 
 			if (fxPtr != nullptr) {
-				osinfo osinfo_var_ = { 0 };
+				osinfo osinfo_var_ = DBJ_OSINFO_EMPTY;
 				osinfo_var_.size_info_ = sizeof(osinfo_var_);
 				if ((0x00000000) == fxPtr(&osinfo_var_)) {
 					return osinfo_var_;
 				}
 			}
 		}
-		static osinfo osinfo_empty_ = { 0, 0, 0, 0, 0, {0} };
+		static osinfo osinfo_empty_ = DBJ_OSINFO_EMPTY; //{ 0, 0, 0, 0, 0, {0} };
 		return osinfo_empty_;
 	} // get_win_version
 
-#define IS_OS_INFO_EMPTY(info_) (0 == info_.major)
+#define DBJ_IS_OS_INFO_EMPTY(info_) (0 == info_.major)
 
 /*
 return true if Windows version is greater than or equal to the specified number
@@ -246,7 +250,7 @@ then ENABLE_VIRTUAL_TERMINAL_PROCESSING is supported.
 		WORD build_ver) {
 		osinfo ver_info_ = get_win_version();
 
-		if (IS_OS_INFO_EMPTY(ver_info_))
+		if (DBJ_IS_OS_INFO_EMPTY(ver_info_))
 			return false;
 
 		if (ver_info_.major > major_ver)
@@ -265,7 +269,7 @@ then ENABLE_VIRTUAL_TERMINAL_PROCESSING is supported.
 		return false;
 	}
 
-#undef IS_OS_INFO_EMPTY
+#undef DBJ_IS_OS_INFO_EMPTY
 
 #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
 #error ENABLE_VIRTUAL_TERMINAL_PROCESSING not found? Try Visual Studio solution re-targeting to the latest SDK.

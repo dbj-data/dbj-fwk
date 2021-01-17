@@ -1,11 +1,19 @@
 #pragma once
-#ifndef DBJ_NANOC_INCLUDED
-#define DBJ_NANOC_INCLUDED
+#ifndef DBJ_WALL_OF_MACROS_INCLUDED
+#define DBJ_WALL_OF_MACROS_INCLUDED
 /* (c) 2019-2021 by dbj.org   -- https://dbj.org/license_dbj/ */
 #ifdef __clang__
 #pragma clang system_header
 #endif
 
+// thus this is active only on not msvc C builds aka clang-cl
+#undef DBJ_UNUSED_F
+#if defined(__clang__) || defined(__GNUC__)
+#define DBJ_UNUSED_F __attribute__((unused))
+#endif
+
+// avoid strdup/strndup garden path
+// https://stackoverflow.com/questions/46013382/c-strndup-implicit-declaration?
 #ifdef __STDC_ALLOC_LIB__
 #define __STDC_WANT_LIB_EXT2__ 1
 #else // ! __STDC_ALLOC_LIB__
@@ -35,13 +43,13 @@
 #endif
 
 // Here's a better C version (from Google's Chromium project):
-
 #undef   DBJ_COUNT_OF
 #define DBJ_COUNT_OF(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
 
 /// https://stackoverflow.com/a/29253284/10870835
 
 // NDEBUG *is* standard macro and has to exist.
+// it is also crucial to assert.h
 #if ! defined (_DEBUG) 
 #if ! defined (NDEBUG)
 #define NDEBUG
@@ -167,4 +175,4 @@ extern "C" {
 } // extern "C" 
 #endif
 
-#endif // DBJ_NANOC_INCLUDED
+#endif // DBJ_WALL_OF_MACROS_INCLUDED
