@@ -54,12 +54,6 @@ namespace dbj {
 		return app_args_result::stop;
 	}
 
-	// we need EASTL to be able to understand and show EASTL defines
-
-#ifdef DBJ_FWK_EASTL_DIRECT_DEPENDANCY
-	extern "C" app_args_result show_eastl_compile_time_defines(void);
-#endif // DBJ_FWK_EASTL_DIRECT_DEPENDANCY
-
 	static app_args_result display_build_env(const char* /*cli_arg_*/)
 	{
 		DBJ_INFO(":");
@@ -114,11 +108,6 @@ namespace dbj {
 		DBJ_INFO(": _CPPUNWIND == %d", (_CPPUNWIND == 1));
 #else
 		DBJ_INFO(": _CPPUNWIND is undefined");
-#endif
-
-		// EASTL specific
-#if DBJ_FWK_EASTL_DIRECT_DEPENDANCY
-		show_eastl_compile_time_defines();
 #endif
 
 		DBJ_INFO(":");

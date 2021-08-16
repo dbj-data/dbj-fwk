@@ -19,11 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="pch.h" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -62,9 +58,6 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
-    <Import Project="..\code-dbj-fwk.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -105,13 +98,15 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalOptions>/permissive- /nologo /Zc:wchar_t  /DUNICODE /D_UNICODE /DWINVER=0x0A00 /GR- /D_WIN32_WINNT=0x0A00  /D_HAS_EXCEPTIONS=0 %(AdditionalOptions) /DDEBUG /D_DEBUG</AdditionalOptions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0 /D_CRT_SECURE_NO_WARNINGS /nologo /permissive- /DWINVER=0x0A00 /D_WIN32_WINNT=0x0A00 /kernel </AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ExceptionHandling>false</ExceptionHandling>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -132,12 +127,14 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalOptions>/permissive- /nologo /Zc:wchar_t  /DUNICODE /D_UNICODE /DWINVER=0x0A00 /GR- /D_WIN32_WINNT=0x0A00  /D_HAS_EXCEPTIONS=0 %(AdditionalOptions)</AdditionalOptions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0 /D_CRT_SECURE_NO_WARNINGS /nologo /permissive- /DWINVER=0x0A00 /D_WIN32_WINNT=0x0A00 /kernel </AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ExceptionHandling>false</ExceptionHandling>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -160,8 +157,8 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalOptions>/D_CRT_SECURE_NO_WARNINGS /nologo /permissive- /DWINVER=0x0A00 /D_WIN32_WINNT=0x0A00 </AdditionalOptions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0 /D_CRT_SECURE_NO_WARNINGS /nologo /permissive- /DWINVER=0x0A00 /D_WIN32_WINNT=0x0A00 /kernel </AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ExceptionHandling>false</ExceptionHandling>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
@@ -188,12 +185,12 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ExceptionHandling>false</ExceptionHandling>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <AdditionalOptions>/D_CRT_SECURE_NO_WARNINGS /nologo /permissive- /DWINVER=0x0A00 /D_WIN32_WINNT=0x0A00 </AdditionalOptions>
+      <AdditionalOptions>/D_HAS_EXCEPTIONS=0 /D_CRT_SECURE_NO_WARNINGS /nologo /permissive- /DWINVER=0x0A00 /D_WIN32_WINNT=0x0A00 /kernel </AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
