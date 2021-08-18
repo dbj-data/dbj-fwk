@@ -1,26 +1,11 @@
 /* (c) 2019-2021 by dbj.org   -- https://dbj.org/license_dbj/ */
 
-/// the mandatory and only initialization of the dbj simplelog
-#define DBJ_FWK_USES_SIMPLELOG
-// #include <simplelog/dbj_simple_log_host.h>
 #include "printing_macros.h"
-
-// dbj_simple_log requires this in one place
-// BEFORE it is used
-#ifdef DBJ_FWK_USES_SIMPLELOG
-int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_SETUP);
-#else // ! DBJ_FWK_USES_SIMPLELOG
-int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
-#endif // DBJ_FWK_USES_SIMPLELOG
-
 #include "win/win_cli_args.h"
 #include "dbj_main.h"
 #include "generate_dump.h"
 
-namespace dbj {
-
-	extern "C"
-		inline void  os_check(void) {
+		static void  os_check(void) {
 		// if the Windows version is equal to or
 		// greater than 10.0.14393 then ENABLE_VIRTUAL_TERMINAL_PROCESSING is
 		// supported.
@@ -38,8 +23,7 @@ namespace dbj {
 	}
 
 	// command line args understood by DBJ+FWK
-	extern "C"
-		inline app_args_result cli_usage(const char* /*cli_arg_*/ = nullptr) noexcept {
+	static dbj::app_args_result cli_usage(const char* /*cli_arg_*/ = nullptr) noexcept {
 
 		DBJ_INFO(": ");
 		DBJ_INFO(": " DBJ_APP_NAME " " DBJ_APP_VERSION);
@@ -56,10 +40,10 @@ namespace dbj {
 		DBJ_INFO(": ");
 
 		//  display the help and stop
-		return app_args_result::stop;
+		return dbj::app_args_result::stop;
 	}
 
-	static app_args_result display_build_env(const char* /*cli_arg_*/)
+	static dbj::app_args_result display_build_env(const char* /*cli_arg_*/)
 	{
 		DBJ_INFO(":");
 
@@ -121,21 +105,35 @@ namespace dbj {
 		DBJ_INFO(":...Leaving... ");
 		DBJ_INFO(":");
 
-		return app_args_result::stop;
+		return dbj::app_args_result::stop;
 
 	}
 	/// --------------------------------------------------------------------------------
-	extern "C"
-		inline app_args_result call_simple_log_test(const char*)
+	static dbj::app_args_result call_simple_log_test(const char*)
 	{
+#if defined(DBJ_FWK_USES_SIMPLELOG)
 		dbj_simple_log_test("");
-		return app_args_result::stop;
+#else 
+		DBJ_INFO(" ");
+		DBJ_INFO("BEGIN Internal Test");
+		DBJ_INFO(" ");
+		DBJ_TRACE("Log  TRACE");
+		DBJ_DEBUG("Log  DEBUG");
+		DBJ_INFO("Log  INFO");
+		DBJ_WARN("Log  WARN");
+		DBJ_ERROR("Log  ERROR");
+		DBJ_FATAL("Log  FATAL");
+		DBJ_INFO(" ");
+		DBJ_INFO("END Internal Test");
+		DBJ_INFO(" ");
+#endif // ! DBJ_FWK_USES_SIMPLELOG
+		return dbj::app_args_result::stop;
 	}
 	/// --------------------------------------------------------------------------------
 	/// in here we solve the SE catching (if SE is raised) and minidump generation
-	extern "C"
-		inline int seh_main(kind_of_app where_am_i_)
-	{
+	static int seh_main(kind_of_app where_am_i_)
+	{				//  exit if bellow WIN 10.0.14393 
+		os_check();
 		// int argc; char** argv ;
 		// technicaly argc,argv are not necessary as 
 		// dbj::app_cli_args are already made at this point
@@ -170,19 +168,18 @@ namespace dbj {
 				break;
 			} // switch
 
-				//  exit if bellow WIN 10.0.14393 
-			os_check();
+
 			// no args given?
-			if (dbj::app_cli_args.argc < 2) {
-				cli_usage();
-				__leave;
-			}
+			//if (dbj::app_cli_args.argc < 2) {
+			//	cli_usage();
+			//	__leave;
+			//}
 			// FWK cli help was requested
-			if (app_args_result::stop == app_args_callback_(DBJ_CL_ARG_HELP, cli_usage)) __leave;
+			if (dbj::app_args_result::stop == app_args_callback_(DBJ_CL_ARG_HELP, cli_usage)) __leave;
 			// FWK log test was requested
-			if (app_args_result::stop == app_args_callback_(DBJ_CL_ARG_LOG_TEST, call_simple_log_test)) __leave;
+			if (dbj::app_args_result::stop == app_args_callback_(DBJ_CL_ARG_LOG_TEST, call_simple_log_test)) __leave;
 			// if this cli arg is defined use that callback
-			if (app_args_result::stop == app_args_callback_(DBJ_CL_ARG_SHOW_BUILD_ENV, display_build_env)) __leave;
+			if (dbj::app_args_result::stop == app_args_callback_(DBJ_CL_ARG_SHOW_BUILD_ENV, display_build_env)) __leave;
 
 			dbj_fwk_main(dbj::app_cli_args.argc, dbj::app_cli_args.argv);
 
@@ -217,7 +214,6 @@ namespace dbj {
 
 	} // seh_main
 
-} // dbj
 	/// --------------------------------------------------------------------------------
 	/*
 	WCHAR policy : ignore it :)
@@ -236,14 +232,14 @@ namespace dbj {
 
 extern "C" int wmain(int argc, wchar_t** argv)
 {
-	return dbj::seh_main(kind_of_app::unicode_console);
+	return seh_main(kind_of_app::unicode_console);
 }
 
 #else // ! clang and _UNICODE
 
 extern "C" int main(int argc, char** argv)
 {
-	return dbj::seh_main(kind_of_app::console);
+	return seh_main(kind_of_app::console);
 }
 
 #endif // ! clang and _UNICODE
@@ -258,7 +254,7 @@ extern "C" int WINAPI  wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	return dbj::seh_main(kind_of_app::unicode_windows);
+	return seh_main(kind_of_app::unicode_windows);
 }
 /// --------------------------------------------------------------------------------
 #else // ! _UNICODE
@@ -270,7 +266,7 @@ extern "C" int WINAPI  WinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	return dbj::seh_main(kind_of_app::windows);
+	return seh_main(kind_of_app::windows);
 }
 #endif // ! _UNICODE
 
