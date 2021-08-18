@@ -111,10 +111,10 @@ extern "C" {
 } // "C"
 #endif // __cplusplus  
 
-#ifdef __cplusplus  
 namespace dbj {
 
 	//---------------------------------------------------------------------
+	namespace {
 	namespace detail {
 		struct app_args_ final {
 			int argc;
@@ -147,9 +147,7 @@ namespace dbj {
 		}
 		return 0;
 	}
-
-	namespace {
-		inline dbj::start_stop< harvest_app_args_, free_app_args_> cli_args_guardian_;
+			inline dbj::start_stop< harvest_app_args_, free_app_args_> cli_args_guardian_;
 	}
 
 	// arguments parsing/handling signals
@@ -242,4 +240,4 @@ namespace dbj {
 #endif // 0
 
 } // dbj
-#endif // __cplusplus  
+

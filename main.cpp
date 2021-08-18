@@ -6,7 +6,12 @@
 #include "printing_macros.h"
 
 // dbj_simple_log requires this in one place
-static int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
+// BEFORE it is used
+#ifdef DBJ_FWK_USES_SIMPLELOG
+int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_SETUP);
+#else // ! DBJ_FWK_USES_SIMPLELOG
+int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
+#endif // DBJ_FWK_USES_SIMPLELOG
 
 #include "win/win_cli_args.h"
 #include "dbj_main.h"
@@ -129,13 +134,41 @@ namespace dbj {
 	/// --------------------------------------------------------------------------------
 	/// in here we solve the SE catching (if SE is raised) and minidump generation
 	extern "C"
-		inline int seh_main(int argc, char** argv)
+		inline int seh_main(kind_of_app where_am_i_)
 	{
+		// int argc; char** argv ;
 		// technicaly argc,argv are not necessary as 
 		// dbj::app_cli_args are already made at this point
+						// made before main
+		// or are they?
+		DBJ_VERIFY(dbj::app_cli_args.argc > 0);
 		__try
 		{
-			// __try {
+			// setup the log v.s where are we 
+			switch (where_am_i_) {
+			case kind_of_app::console:
+			case kind_of_app::unicode_console:
+				// "switch on" VT100 for WIN10 cmd.exe
+				// an awfull hack, and really works
+				// ps: make sure it is not empty string!
+				system(" ");
+				break;
+				case kind_of_app::windows :
+				case kind_of_app::unicode_windows :
+#ifndef DBJ_FWK_USES_SIMPLELOG
+					#error DBJ_FWK_USES_SIMPLELOG must be used for building dbj_fwk Windows applications
+#endif
+
+				break;
+			default:
+				DBJ_INFO(" ");
+				DBJ_ERROR("================================================================");
+				DBJ_ERROR("Impossible kind of application?");
+				DBJ_ERROR("================================================================");
+				DBJ_INFO(" ");
+				__leave;
+				break;
+			} // switch
 
 				//  exit if bellow WIN 10.0.14393 
 			os_check();
@@ -151,7 +184,7 @@ namespace dbj {
 			// if this cli arg is defined use that callback
 			if (app_args_result::stop == app_args_callback_(DBJ_CL_ARG_SHOW_BUILD_ENV, display_build_env)) __leave;
 
-			dbj_fwk_main(argc, argv);
+			dbj_fwk_main(dbj::app_cli_args.argc, dbj::app_cli_args.argv);
 
 			DBJ_INFO(" ");
 			DBJ_INFO("================================================================");
@@ -203,29 +236,14 @@ namespace dbj {
 
 extern "C" int wmain(int argc, wchar_t** argv)
 {
-	dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
-
-	// "switch on" VT100 for WIN10 cmd.exe
-	// an awfull hack
-	// and this is it ... really
-	// ps: make sure it is not empty string!
-	system(" ");
-
-	// made before main
-	DBJ_VERIFY(dbj::app_cli_args.argc > 0);
-	return dbj::seh_main(dbj::app_cli_args.argc, dbj::app_cli_args.argv);
-
+	return dbj::seh_main(kind_of_app::unicode_console);
 }
 
 #else // ! clang and _UNICODE
 
 extern "C" int main(int argc, char** argv)
 {
-	// "switch on" VT100 for WIN10 cmd.exe
-	// an awfull hack
-	system(" ");
-
-	return dbj::seh_main(argc, argv);
+	return dbj::seh_main(kind_of_app::console);
 }
 
 #endif // ! clang and _UNICODE
@@ -240,11 +258,7 @@ extern "C" int WINAPI  wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_SETUP);
-
-	// made before main
-	DBJ_VERIFY(dbj::app_cli_args.argc > 0);
-	return dbj::seh_main(dbj::app_cli_args.argc, dbj::app_cli_args.argv);
+	return dbj::seh_main(kind_of_app::unicode_windows);
 }
 /// --------------------------------------------------------------------------------
 #else // ! _UNICODE
@@ -256,10 +270,8 @@ extern "C" int WINAPI  WinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_SETUP);
-
-	// made before main
-	DBJ_VERIFY(dbj::app_cli_args.argc > 0, "dbj::app_args_ not made on time?");
-	return dbj::seh_main(dbj::app_cli_args.argc, dbj::app_cli_args.argv);
+	return dbj::seh_main(kind_of_app::windows);
 }
 #endif // ! _UNICODE
+
+
