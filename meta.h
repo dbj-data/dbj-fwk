@@ -7,10 +7,10 @@ CAUTION! DBJ_APP_NAME is used as folder name at one point
 
 */
 #define DBJ_APP_NAME "DBJ+BENCH"
-#define DBJ_APP_MAJOR 2
+#define DBJ_APP_MAJOR 3
 #define DBJ_APP_MINOR 0
 #define DBJ_APP_PATCH 0
-#define DBJ_APP_VERSION "2.0.0"
+#define DBJ_APP_VERSION "3.0.0"
 #define DBJ_APP_OWNER "dbj@dbj.org"
 #define DBJ_APP_LICENSE "LICENSE_DBJ"
 #define DBJ_APP_COPYRIGHT "(c) 2020 by dbj@dbj.org"

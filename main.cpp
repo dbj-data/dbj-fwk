@@ -29,14 +29,34 @@ static dbj::app_args_result cli_usage(const char* /*cli_arg_*/ = nullptr) noexce
 	DBJ_INFO(": " DBJ_APP_NAME " " DBJ_APP_VERSION);
 	DBJ_INFO(": " DBJ_APP_COPYRIGHT);
 	DBJ_INFO(": ");
-	DBJ_INFO(": " DBJ_APP_NAME ", Host Command LIne arguments ");
+	DBJ_INFO(": Executable: %s", dbj::app_cli_args.argv[0]);
+	DBJ_INFO(": ");
+	DBJ_INFO(": This is host app to the number of benchmarks and tests.");
+	DBJ_INFO(": Host can be built as console or windows app.");
+	DBJ_INFO(": ");
+	DBJ_INFO(": " DBJ_APP_NAME ", Host specific Command Line arguments ");
 	DBJ_INFO(": If these are given, they are processed and " DBJ_APP_NAME " exits");
 	DBJ_INFO(": ");
 	DBJ_INFO(": " DBJ_CL_ARG_SHOW_BUILD_ENV " -- display the build environment key parameters");
 	DBJ_INFO(": " DBJ_CL_ARG_LOG_TEST " -- quick dbj--simpelog test");
+	DBJ_INFO(": " DBJ_CL_ARG_HELP " -- this short help");
+	DBJ_INFO(": ");
+	DBJ_INFO(": If these are given, they make host app ignore benchmarks or tests");
+	DBJ_INFO(": ");
 	DBJ_INFO(": " DBJ_CL_ARG_IGNORE_UBENCH " -- do not execute benchmarks");
 	DBJ_INFO(": " DBJ_CL_ARG_IGNORE_UTEST " -- do not execute tests");
-	DBJ_INFO(": " DBJ_CL_ARG_HELP " -- this short help");
+	DBJ_INFO(": ");
+	DBJ_INFO(": Otherwise first all benchmarks and all tests second will be executed.");
+	DBJ_INFO(": This can add up quickly to a lot of benchmarks and tests.");
+	DBJ_INFO(": Please use ubench or utest cli arguments to list, filter etc.");
+	DBJ_INFO(": ");
+	DBJ_INFO(": For example: ignore tests, run only benchmarks as filtered with confidence 20");
+	DBJ_INFO(": +notest --filter=pullocators* --confidence=20");
+	DBJ_INFO(": ");
+	DBJ_INFO(": If host is built as windows app, all ouput goes to this log file: ");
+	DBJ_INFO(": %s.log", dbj::app_cli_args.argv[0]);
+	DBJ_INFO(": ");
+	DBJ_INFO(": Log file is truncated on each run.");
 	DBJ_INFO(": ");
 
 	//  display the help and stop

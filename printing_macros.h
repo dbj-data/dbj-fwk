@@ -9,7 +9,12 @@
 #if defined(DBJ_FWK_USES_SIMPLELOG)
 
 #define DBJ_SIMPLELOG_USER_DEFINED_MACRO_NAMES
-#include "../simplelog/dbj_simple_log_host.h"
+
+#ifndef __clang__
+#include "../simplelog/dbj_simple_log_msvc.h"
+#else
+#include "../simplelog/dbj_simple_log.h"
+#endif // ! __clang__ 
 
 #define DBJ_TRACE(...) dbj_log_trace(__VA_ARGS__)
 #define DBJ_DEBUG(...) dbj_log_debug(__VA_ARGS__)
