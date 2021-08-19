@@ -229,6 +229,9 @@ static int seh_main(kind_of_app where_am_i_)
 		}
 	} // __except
 
+	// called from a destructor
+	// dbj_log_finalize();
+
 	return EXIT_SUCCESS;
 
 } // seh_main
