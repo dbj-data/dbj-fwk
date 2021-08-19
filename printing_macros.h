@@ -1,8 +1,12 @@
-#pragma once
+#ifndef PRTINTING_MACROS_INCLUDED_
+#define PRTINTING_MACROS_INCLUDED_
 
+#ifdef __clang__
+#pragma clang system_header
+#endif
 
+// DBJ+FWK is stand alone if this is not defined at build time
 #if defined(DBJ_FWK_USES_SIMPLELOG)
-// NOTE: host app includes dbj_simple_log_host.h
 
 #define DBJ_SIMPLELOG_USER_DEFINED_MACRO_NAMES
 #include "../simplelog/dbj_simple_log_host.h"
@@ -16,7 +20,7 @@
 
 // dbj_simple_log requires this in one place
 // BEFORE it is used
-extern int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_SETUP);
+// extern int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_SETUP);
 
 //#else // ! DBJ_FWK_USES_SIMPLELOG
 //int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_WITH_CONSOLE);
@@ -24,7 +28,7 @@ extern int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_SETUP);
 
 #else // ! defined(DBJ_FWK_USES_SIMPLELOG)
 // -----------------------------------------------------------------------------
-
+// stand alone console printing macros and colouring
 #include "vt100.h"
 
 // redirect stderr to a file if required
@@ -39,7 +43,7 @@ extern int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_SETUP);
 #define DBJ_INFO(...)  fprintf(stdout, VT100_FG_CYAN_BOLD ); fprintf(stderr, "\n" __VA_ARGS__ ); fprintf(stdout, VT100_RESET ); 
 
 #undef  DBJ_DEBUG
-#define  DBJ_DEBUG DBJ_PRINT
+#define  DBJ_DEBUG DBJ_INFO
 
 #undef  DBJ_WARN
 #define DBJ_WARN(...)  fprintf(stdout, VT100_FG_YELLOW ); fprintf(stderr, "\n"  __VA_ARGS__ ); fprintf(stdout, VT100_RESET ); 
@@ -48,7 +52,7 @@ extern int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_SETUP);
 #define DBJ_ERROR(...)  fprintf(stdout, VT100_FG_RED_BOLD ); fprintf(stderr, "\n"  __VA_ARGS__ ); fprintf(stdout, VT100_RESET ); 
 
 #undef  DBJ_FATAL
-#define  DBJ_FATAL DBJ_PRINT
+#define  DBJ_FATAL DBJ_ERROR
 
 #endif // ! defined(DBJ_FWK_USES_SIMPLELOG)
 
@@ -66,3 +70,5 @@ extern int dbj_simple_log_setup_ = (DBJ_LOG_DEFAULT_SETUP);
 #define DBJ_DBG(F,X) ((void)X)
 // #define SX(F,...)
 #endif // ! _DEBUG
+
+#endif // PRTINTING_MACROS_INCLUDED_
