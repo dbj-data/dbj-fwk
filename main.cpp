@@ -176,8 +176,10 @@ static int seh_main(kind_of_app where_am_i_)
 		case kind_of_app::console:
 		case kind_of_app::unicode_console:
 		{
+#ifndef __clang__
 			int rez = dbj_simple_log_startup(DBJ_LOG_DEFAULT_WITH_CONSOLE, dbj::app_cli_args.argv[0]);
 			DBJ_ASSERT(EXIT_SUCCESS == rez);
+#endif
 			// "switch on" VT100 for WIN10 cmd.exe
 			// an awfull hack, and really works
 			// ps: make sure it is not empty string!
@@ -190,9 +192,10 @@ static int seh_main(kind_of_app where_am_i_)
 #ifndef DBJ_FWK_USES_SIMPLELOG
 #error DBJ_FWK_USES_SIMPLELOG must be used for building dbj_fwk Windows applications
 #endif
-
+#ifndef __clang__
 			int rez = dbj_simple_log_startup(DBJ_LOG_DEFAULT_SETUP, dbj::app_cli_args.argv[0]);
 			DBJ_ASSERT(EXIT_SUCCESS == rez);
+#endif
 		}
 			break;
 		default:
