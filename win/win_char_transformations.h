@@ -21,7 +21,7 @@ extern "C" {
 	{
 		size_t size_ = lstrlenA(str_a_);
 		DBJ_VERIFYX(size_ < dbj_a_w_string_max_size );
-		dbj_a_string dbj_a_string = { L'\0' };
+		dbj_a_string dbj_a_string = { '\0' };
 		HRESULT hr_ = win_sprintfa(dbj_a_string.data, dbj_a_w_string_max_size, "%s", str_a_);
 		DBJ_VERIFYX(hr_ == S_OK);
 		return dbj_a_string;
