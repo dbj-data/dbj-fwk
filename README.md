@@ -9,11 +9,11 @@ Non Ambitious Windows App's Framework
 
 Why would anybody care for that? 
 
-SEH is intrinsic part of Windows. It is also intrinsic part of Microsoft C/C++ compiler, a.k.a. CL (cl.exe). Thus it is always there. In any kind of Windows executable.
+SEH is intrinsic part of Windows. It is also intrinsic part of Microsoft C/C++ compiler, a.k.a. CL (cl.exe). Thus it is always there. In any kind of Windows executable built with CL.
 
-By managing raised Structured Execeptions (SE) in your apps you are in total control. C or C++. Stack overflow, division with zero, etc. All this "things" and more, are caught by the SEH. You just have to handle them.
+By managing raised Structured Execeptions (SE) in your apps you are in total control. C or C++. Everything is caugh: stack overflow, division with zero, etc. All this "things" and more, are caught by the SEH. You just have to handle them.
 
-In here we have encapsulated all of that handling for you. And more. We create a minidump in case of SE caught. Users are informed with full path where is that *.dmp file saved. 
+In here we have encapsulated all of that handling for you. And more. We create a minidump in case of SE caught. You or your users are informed with full path where is that *.dmp file saved. 
 
 All the dmp (aka minidump) files are stored in 
 
@@ -29,9 +29,9 @@ At this stage you need Visual Studio 2022. Community edition is free. You can op
 
 ![vs dmp](./media/vsminidump.png)
 
-Perhaps not very usefull for 99% of population. But in the upper right corner there is that "Debug with Native" link.
+Perhaps not very usefull for 99% of population. But in the upper right corner there is that "Debug with Native" link. Emphasized with a red square.
 
-Click on that and you will be taken to the exact location of the cause for which SE was raised. And that is immensely usefull. Yes, in 99% of occassions that will be in your code :wink:
+Assumption is you are on the same machine where you are developing, with the source code present. Click on that thing i nthe red sqaure and you will be taken to the exact location in the code, where the cause is for which the SE was raised. And that is immensely usefull. Yes, in 99% of occassions that will be in your code :wink:
 
 ### Remember
 
