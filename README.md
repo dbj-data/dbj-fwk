@@ -3,7 +3,7 @@
 
 Non Ambitious Windows App's Framework
 
-&copy; 2020 by dbj@dbj.org
+&copy; 2020 -2022 by dbj@dbj.org
 
 > Purpose is to encapsulate and decouple, top level [SEH](https://en.wikipedia.org/wiki/Microsoft-specific_exception_handling_mechanisms) handling.
 
@@ -25,7 +25,7 @@ All the dmp (aka minidump) files are stored in
 
 Each minidump creation creates a new minidump file. You can easily see the time stamp in those file names.
 
-At this stage you need Visual Studio 2019. Community edition is free. You can open the last dmp or any of them using Visual Studio 2019. Just double click on it. And then you will see the highly technical details:
+At this stage you need Visual Studio 2022. Community edition is free. You can open the last dmp or any of them using Visual Studio 2022. Just double click on it. And then you will see the highly technical details:
 
 ![vs dmp](./media/vsminidump.png)
 
@@ -35,7 +35,7 @@ Click on that and you will be taken to the exact location of the cause for which
 
 ### Remember
 
-SEH is not C++ exceptions. This is OS native exceptions. Thus SEH implemented in your app can catch "anything" wrong you or anybody can (and will) do. Much more than disciplined C++ and use of C++ exceptions can and will. And it is always there. 
+SEH is not C++ exceptions. SEH is Windows OS native exceptions. Thus SEH implemented in your app can catch "anything" wrong you or anybody can (and will) do. Much more than disciplined C++ and use of C++ exceptions can and will. And it is always there. 
 
 **DBJ+FWK** makes it much easier for you to use this functionality and focus on your code. Desktop UI app or console, it does not matter.
 
